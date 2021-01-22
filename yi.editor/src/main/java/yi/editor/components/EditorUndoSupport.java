@@ -11,12 +11,12 @@ import yi.editor.framework.action.EditorBasicAction;
 
 import java.util.Optional;
 
-public final class EditorUndoSystem implements EditorComponent<Object> {
+public final class EditorUndoSupport implements EditorComponent<Object> {
 
     private final EditorAction undo;
     private final EditorAction redo;
 
-    public EditorUndoSystem() {
+    public EditorUndoSupport() {
         undo = new EditorBasicAction(EditorTextResources.UNDO, this::requestUndo) {
             @Override
             public void refreshState(EditorActionContext context) {
@@ -50,7 +50,9 @@ public final class EditorUndoSystem implements EditorComponent<Object> {
         var window = context.getEditorWindow();
         var model = window.getGameModel();
         var undoSystem = model.getEditor().getUndoSystem();
-        undoSystem.performUndo();
+        if (undoSystem.canUndo()) {
+            undoSystem.performUndo();
+        }
         undo.setEnabled(undoSystem.canUndo());
         redo.setEnabled(undoSystem.canRedo());
     }
@@ -59,7 +61,9 @@ public final class EditorUndoSystem implements EditorComponent<Object> {
         var window = context.getEditorWindow();
         var model = window.getGameModel();
         var undoSystem = model.getEditor().getUndoSystem();
-        undoSystem.performRedo();
+        if (undoSystem.canRedo()) {
+            undoSystem.performRedo();
+        }
         redo.setEnabled(undoSystem.canRedo());
         undo.setEnabled(undoSystem.canUndo());
     }

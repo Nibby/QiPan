@@ -46,7 +46,7 @@ public class EditorWindow extends Stage {
 
     private final Property<EditorPerspective> perspective = new Property<>(EditorPerspective.NONE);
     private final EditorActionManager actionManager;
-    private final EditorUndoSystem undoSystem;
+    private final EditorUndoSupport undoSystem;
 
     private final EditorMenuBar menuBar;
     private final EditorBoardArea boardArea;
@@ -64,7 +64,7 @@ public class EditorWindow extends Stage {
 
     public EditorWindow(GameModel gameModel, EditorPerspective perspective) {
         actionManager = new EditorActionManager(this);
-        undoSystem = new EditorUndoSystem();
+        undoSystem = new EditorUndoSupport();
         addComponent(undoSystem);
 
         footerToolBar = new EditorFooterToolBar();
