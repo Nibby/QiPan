@@ -2,18 +2,15 @@ package yi.editor;
 
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 import yi.component.boardviewer.GameBoardViewer;
 import yi.component.commentviewer.GameCommentViewer;
-import yi.component.shared.Property;
-import yi.component.shared.PropertyListener;
+import yi.component.shared.property.Property;
+import yi.component.shared.property.PropertyListener;
 import yi.component.shared.YiWindow;
 import yi.component.shared.component.FontManager;
-import yi.component.shared.component.YiScene;
 import yi.component.shared.utilities.GuiUtilities;
 import yi.component.shared.utilities.SystemUtilities;
 import yi.component.treeviewer.GameTreeViewer;
@@ -27,7 +24,6 @@ import yi.editor.framework.EditorHelper;
 import yi.editor.framework.EditorTextResources;
 import yi.editor.framework.action.EditorAction;
 import yi.editor.framework.action.EditorActionManager;
-import yi.editor.hack.Hacks;
 import yi.editor.settings.EditorSettings;
 
 import java.io.IOException;

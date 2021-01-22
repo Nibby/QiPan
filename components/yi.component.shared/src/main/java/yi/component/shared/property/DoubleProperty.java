@@ -1,22 +1,22 @@
-package yi.component.shared;
+package yi.component.shared.property;
 
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A wrapper for primitive {@code int} data type that is capable of notifying
+ * A wrapper for primitive {@code double} data type that is capable of notifying
  * listeners of value changes.
  */
-public class IntProperty {
+public class DoubleProperty {
 
-    private final Set<IntPropertyListener> listeners = new HashSet<>(2);
-    private int value;
+    private final Set<DoublePropertyListener> listeners = new HashSet<>(2);
+    private double value;
 
     /**
-     * Instantiates the variable with a default value of {@code 0}.
+     * Instantiates the variable with a default value of {@code 0d}.
      */
-    public IntProperty() {
-        this(0);
+    public DoubleProperty() {
+        this(0d);
     }
 
     /**
@@ -24,17 +24,17 @@ public class IntProperty {
      *
      * @param initialValue Initial value.
      */
-    public IntProperty(int initialValue) {
+    public DoubleProperty(double initialValue) {
         this.value = initialValue;
     }
 
     /**
      * Subscribes to value changes from this variable. New events will be generated
-     * for each {@link #set(int)} call.
+     * for each {@link #set(double)} call.
      *
      * @param l Listener to respond to new value changes.
      */
-    public void addListener(IntPropertyListener l) {
+    public void addListener(DoublePropertyListener l) {
         listeners.add(l);
     }
 
@@ -43,17 +43,17 @@ public class IntProperty {
      *
      * @param l An existing listener to remove.
      */
-    public void removeListener(IntPropertyListener l) {
+    public void removeListener(DoublePropertyListener l) {
         listeners.remove(l);
     }
 
     /**
      * Updates the value represented by this property and fires a
-     * {@link BooleanPropertyListener#onValueChange(boolean)} event.
+     * {@link DoublePropertyListener#onValueChange(double)} event.
      *
      * @param newValue New value for this variable.
      */
-    public void set(int newValue) {
+    public void set(double newValue) {
         this.value = newValue;
 
         listeners.forEach(l -> l.onValueChange(newValue));
@@ -63,7 +63,7 @@ public class IntProperty {
      *
      * @return Current value of the variable.
      */
-    public int getValue() {
+    public double get() {
         return value;
     }
 

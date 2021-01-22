@@ -2,7 +2,7 @@ package yi.component.boardviewer;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import yi.component.shared.NullableProperty;
+import yi.component.shared.property.NullableProperty;
 import yi.component.shared.audio.StoneAudioSet;
 import yi.core.go.StoneColor;
 

@@ -1,4 +1,4 @@
-package yi.component.shared;
+package yi.component.shared.property;
 
 /**
  * Listens to value changes from a {@link BooleanProperty}.

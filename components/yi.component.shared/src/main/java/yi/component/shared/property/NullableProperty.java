@@ -1,4 +1,4 @@
-package yi.component.shared;
+package yi.component.shared.property;
 
 import org.jetbrains.annotations.Nullable;
 

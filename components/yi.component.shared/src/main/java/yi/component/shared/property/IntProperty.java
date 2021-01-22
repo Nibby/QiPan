@@ -1,24 +1,22 @@
-package yi.component.shared;
-
-import org.jetbrains.annotations.NotNull;
+package yi.component.shared.property;
 
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A wrapper for primitive {@code boolean} data type that is capable of notifying
+ * A wrapper for primitive {@code int} data type that is capable of notifying
  * listeners of value changes.
  */
-public class BooleanProperty {
+public class IntProperty {
 
-    private final Set<BooleanPropertyListener> listeners = new HashSet<>(2);
-    private boolean value;
+    private final Set<IntPropertyListener> listeners = new HashSet<>(2);
+    private int value;
 
     /**
-     * Instantiates the variable with a default value of {@code false}.
+     * Instantiates the variable with a default value of {@code 0}.
      */
-    public BooleanProperty() {
-        this(false);
+    public IntProperty() {
+        this(0);
     }
 
     /**
@@ -26,17 +24,17 @@ public class BooleanProperty {
      *
      * @param initialValue Initial value.
      */
-    public BooleanProperty(boolean initialValue) {
+    public IntProperty(int initialValue) {
         this.value = initialValue;
     }
 
     /**
      * Subscribes to value changes from this variable. New events will be generated
-     * for each {@link #set(boolean)} call.
+     * for each {@link #set(int)} call.
      *
      * @param l Listener to respond to new value changes.
      */
-    public void addListener(BooleanPropertyListener l) {
+    public void addListener(IntPropertyListener l) {
         listeners.add(l);
     }
 
@@ -45,7 +43,7 @@ public class BooleanProperty {
      *
      * @param l An existing listener to remove.
      */
-    public void removeListener(@NotNull BooleanPropertyListener l) {
+    public void removeListener(IntPropertyListener l) {
         listeners.remove(l);
     }
 
@@ -55,7 +53,7 @@ public class BooleanProperty {
      *
      * @param newValue New value for this variable.
      */
-    public void set(boolean newValue) {
+    public void set(int newValue) {
         this.value = newValue;
 
         listeners.forEach(l -> l.onValueChange(newValue));
@@ -65,7 +63,7 @@ public class BooleanProperty {
      *
      * @return Current value of the variable.
      */
-    public boolean get() {
+    public int getValue() {
         return value;
     }
 

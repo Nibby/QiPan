@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import yi.component.boardviewer.editmodes.AbstractEditMode;
 import yi.component.boardviewer.editmodes.EditMode;
-import yi.component.shared.*;
+import yi.component.shared.property.*;
 import yi.core.go.GameModel;
 import yi.core.go.GameNode;
 
