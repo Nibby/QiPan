@@ -136,7 +136,7 @@ public final class EditorHelper {
         }
         EditorApplicationEventHandler.initialize(parameters);
         EditorFontManager.loadBundledFonts();
-        YiScene.addExtraStylesheet("/yi/editor/fonts/font.css", EditorHelper.class);
+        SkinManager.addExtraStylesheet("/yi/editor/fonts/font.css", EditorHelper.class);
         FontManager.setDefaultFont(new Font("Noto Sans", 12d));
         EditorTextResources.installSupportedLanguages();
 //        I18n.setCurrentLanguage(Language.getSupportedLanguages().get(1));

@@ -1,10 +1,10 @@
 package yi.component.shared.component;
 
-import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import org.jetbrains.annotations.NotNull;
+import yi.component.shared.YiWindow;
 import yi.component.shared.i18n.TextResource;
 import yi.component.shared.utilities.GuiUtilities;
 
@@ -78,11 +78,11 @@ public final class Accelerator {
      * as long as the key combination is active, regardless of the currently focused
      * component within the scene.
      *
-     * @param scene Scene to install shortcut key.
+     * @param window Window to install shortcut key.
      * @param action Action to perform once the key combination is active.
      */
-    public void install(@NotNull Scene scene, Runnable action) {
-        scene.getAccelerators().put(getKeyCombination(), action);
+    public void install(@NotNull YiWindow window, Runnable action) {
+        window.getScene().installAccelerator(getKeyCombination(), action);
     }
 
     void setKeyCombination(@NotNull KeyCombination newCombination) {
@@ -123,11 +123,11 @@ public final class Accelerator {
      * Adds an additional shortcut key to trigger some action on the given scene.
      *
      * @param id Unique ID of the accelerator to be installed.
-     * @param scene Scene to have shortcut keys added.
+     * @param window Window to have shortcut keys added.
      * @param action Code to run when the shortcut key is active.
      */
-    public static void install(String id, YiScene scene, Runnable action) {
-        getAccelerator(id).ifPresentOrElse(it -> it.install(scene, action), () -> Accelerator.noAcceleratorWithId(id));
+    public static void install(String id, YiWindow window, Runnable action) {
+        getAccelerator(id).ifPresentOrElse(it -> it.install(window, action), () -> Accelerator.noAcceleratorWithId(id));
     }
 
     private static void noAcceleratorWithId(String id) {

@@ -64,7 +64,7 @@ final class EditorStandardActionsHandler implements EditorStandardActions.Action
         var window = context.getEditorWindow();
         var fileChooser = new FileChooser();
         fileChooser.setTitle(EditorTextResources.MENUITEM_OPEN_GAME.getLocalisedText());
-        File selectedFile = fileChooser.showOpenDialog(window);
+        File selectedFile = fileChooser.showOpenDialog(window.getStage());
         if (selectedFile != null) {
             try {
                 var importedModel = GameModelImporter.INSTANCE.fromFile(selectedFile.toPath());
@@ -114,7 +114,7 @@ final class EditorStandardActionsHandler implements EditorStandardActions.Action
         var saveFileChooser = new FileChooser();
         saveFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Smart Game Format (*.sgf)", "sgf"));
         saveFileChooser.setTitle("Select Save Location");
-        File saveFile = saveFileChooser.showSaveDialog(window);
+        File saveFile = saveFileChooser.showSaveDialog(window.getStage());
         if (saveFile != null) {
             Path savePath = saveFile.toPath();
             gameModel.setLastSavePath(savePath);

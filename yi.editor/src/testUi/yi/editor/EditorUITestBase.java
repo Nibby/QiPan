@@ -41,7 +41,7 @@ public abstract class EditorUITestBase {
                 initializeTestActions(actionManager);
             }
         };
-        stage = window;
+        stage = window.getStage();
         stage.show();
         stage.requestFocus();
     }

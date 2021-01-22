@@ -1,5 +1,9 @@
 package yi.component.shared.component;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import yi.component.shared.Resource;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -8,28 +12,27 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 /**
- * Represents a skin bundle for the application that styles the FX UI controls.
+ * <p/>A skin is a collection of related CSS that is applied to JavaFx components
+ * for aesthetic purposes. Each skin begins with an entry point, which is a file
+ * called {@code skin.css} in the skin's top level directory.
  */
 public final class Skin {
 
     private static final String COMMON_CSS_FILE = "/yi/component/shared/skins/common.css";
     private static final String MAIN_CSS_FILE_NAME = "skin.css";
-    private static final String SETTINGS_FILE_NAME = "settings.json";
 
     static {
-        YiScene.addExtraStylesheet(COMMON_CSS_FILE, Skin.class);
+        SkinManager.addExtraStylesheet(COMMON_CSS_FILE, Skin.class);
     }
 
     private final String mainCssUrl;
 
     private Skin(URL directoryUrl) {
         this.mainCssUrl = directoryUrl.toString() + MAIN_CSS_FILE_NAME;
-        loadData();
     }
 
     private Skin(Path directory) {
         this.mainCssUrl = toMainCssUrl(directory);
-        loadData();
     }
 
     private String toMainCssUrl(Path directory) {
@@ -43,9 +46,23 @@ public final class Skin {
         }
     }
 
-    private void loadData() {
+    /**
+     * Applies this skin to the given scene.
+     *
+     * @param scene Scene to apply skin to.
+     */
+    public void apply(Scene scene) {
+        var mainCss = getMainCssUrl();
 
+        ObservableList<String> stylesheets = scene.getStylesheets();
+
+        stylesheets.add(mainCss);
+        for (Resource extraStylesheet : SkinManager.getExtraStylesheets()) {
+            String resourceString = extraStylesheet.getResourceUrlAsString();
+            stylesheets.add(resourceString);
+        }
     }
+
 
     /**
      *
@@ -66,9 +83,8 @@ public final class Skin {
     public static boolean isSkinDirectory(Path directory) {
         boolean isDirectory = Files.isDirectory(directory);
         boolean hasMainCss = Files.exists(directory.resolve(MAIN_CSS_FILE_NAME));
-        boolean hasSettings = Files.exists(directory.resolve(SETTINGS_FILE_NAME));
 
-        return isDirectory && hasMainCss && hasSettings;
+        return isDirectory && hasMainCss;
     }
 
     /**
@@ -113,5 +129,4 @@ public final class Skin {
         var url = resourceClass.getResource(directoryUrl);
         return Optional.of(new Skin(url));
     }
-
 }

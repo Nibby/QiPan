@@ -126,7 +126,7 @@ public class EditorSubMenuActionTest extends EditorUITestBase {
     }
 
     private void testActionsExecutable(FxRobot robot) throws InterruptedException {
-        robot.clickOn(window.getScene());
+        robot.clickOn(window.getStage());
         Thread.sleep(100);
 
         robot.press(KeyCode.CONTROL, KeyCode.ALT, KeyCode.SHIFT, KeyCode.DIGIT1);

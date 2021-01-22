@@ -11,6 +11,7 @@ import yi.component.boardviewer.GameBoardViewer;
 import yi.component.commentviewer.GameCommentViewer;
 import yi.component.shared.Property;
 import yi.component.shared.PropertyListener;
+import yi.component.shared.YiWindow;
 import yi.component.shared.component.FontManager;
 import yi.component.shared.component.YiScene;
 import yi.component.shared.utilities.GuiUtilities;
@@ -37,7 +38,7 @@ import java.util.Objects;
 /**
  * The main window for the {@link GameModel} editor tool.
  */
-public class EditorWindow extends Stage {
+public class EditorWindow extends YiWindow {
 
     private static final GameModel DEFAULT_MODEL = new GameModel(1, 1, StandardGameRules.CHINESE);
     private static final List<EditorWindow> ACTIVE_WINDOWS = new ArrayList<>();
@@ -125,17 +126,17 @@ public class EditorWindow extends Stage {
 
         setPerspective(perspective);
         setGameModel(gameModel);
-        setTitle(EditorHelper.getProgramName());
+        getStage().setTitle(EditorHelper.getProgramName());
         setIcons();
 
         ACTIVE_WINDOWS.add(this);
-        onCloseRequestProperty().addListener(event -> ACTIVE_WINDOWS.remove(this));
+        getStage().onCloseRequestProperty().addListener(event -> ACTIVE_WINDOWS.remove(this));
     }
 
     private void setIcons() {
         final String baseDir = "/yi/editor/icons/stage/";
         if (!SystemUtilities.isMac()) {
-            getIcons().addAll(
+            getStage().getIcons().addAll(
                 new Image(EditorWindow.class.getResourceAsStream(baseDir + "icon16.png")),
                 new Image(EditorWindow.class.getResourceAsStream(baseDir + "icon32.png")),
                 new Image(EditorWindow.class.getResourceAsStream(baseDir + "icon64.png")),
@@ -224,15 +225,15 @@ public class EditorWindow extends Stage {
         container.setTop(controlPane);
         container.setCenter(content);
 
-        var currentScene = getScene();
+        var scene = getScene();
+        var currentContent = scene.getContent();
 
-        if (currentScene != null) {
-            double currentHeight = currentScene.getHeight();
+        if (scene.isContentSet()) {
+            double currentHeight = currentContent.getBoundsInLocal().getHeight();
             double newAspectRatio = newLayout.getPreferredAspectRatio();
             double newWidth = currentHeight * newAspectRatio;
 
-            var newScene = new YiScene(container, newWidth, currentHeight);
-            setYiScene(newScene);
+            scene.setContent(container);
             setWidth(newWidth);
         } else {
             var startupSize = newLayout.getMinimumWindowSize();
@@ -240,8 +241,9 @@ public class EditorWindow extends Stage {
             double startupWidth = startupSize.getWidth();
             double startupHeight = startupSize.getHeight();
 
-            var newScene = new YiScene(container, startupWidth, startupHeight);
-            setYiScene(newScene);
+            scene.setContent(container);
+            setWidth(startupWidth);
+            setHeight(startupHeight);
         }
 
         var minSize = newLayout.getMinimumWindowSize();
@@ -272,21 +274,6 @@ public class EditorWindow extends Stage {
             }
             actionManager.addAction(action);
         }
-    }
-
-    /**
-     * Wrapper for {@link #setScene(Scene)} but also runs some custom routines.
-     * It is highly recommended to use this method rather than the base {@link #setScene(Scene)}
-     * so that scenes support as many editor features as possible.
-     *
-     * @param newScene Scene to set.
-     */
-    private void setYiScene(@NotNull YiScene newScene) {
-        Objects.requireNonNull(newScene, "Scene must not be null");
-        if (SystemUtilities.isMac()) {
-            Hacks.fixSingleKeyAcceleratorsForMac(actionManager.getAllActions(), newScene);
-        }
-        setScene(newScene);
     }
 
     public Parent getBoardComponent() {

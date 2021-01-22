@@ -1,8 +1,8 @@
 package yi.editor.hack;
 
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
-import yi.component.shared.component.YiScene;
 import yi.editor.framework.action.EditorAction;
 
 import java.util.Arrays;
@@ -24,7 +24,7 @@ public final class Hacks {
      *  contain at least one modifier. To support those accelerators, we manually register
      *  them to the scene here.
      */
-    public static void fixSingleKeyAcceleratorsForMac(Set<EditorAction> actionSet, YiScene scene) {
+    public static void fixSingleKeyAcceleratorsForMac(Set<EditorAction> actionSet, Scene scene) {
         for (EditorAction action : actionSet) {
             action.getAccelerator().ifPresent(accelerator -> {
                 KeyCombination keyCombination = accelerator.getKeyCombination();

@@ -1,45 +1,74 @@
 package yi.component.shared.component;
 
-import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import yi.component.shared.Resource;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 /**
- * Wrapper for {@link Scene} with additional stylesheets applied.
+ * Wrapper for {@link Scene} with additional UI features. The scene is comprised
+ * of the main content and a glass pane. The glass pane is used to serve modal
+ * prompts and other overlay components.
  */
-public class YiScene extends Scene {
+public final class YiScene {
 
-    private static final Set<Resource> EXTRA_STYLESHEETS = new HashSet<>();
+    private final Scene scene;
+    private final StackPane parentStack = new StackPane();
 
-    public YiScene(Parent root) {
-        super(root);
-        applySkin();
+    private BorderPane content;
+    private GlassPane glassPane;
+    private boolean contentSet = false;
+
+    public YiScene() {
+        content = new BorderPane();
+        glassPane = new GlassPane();
+
+//        parentStack.getChildren().addAll(content, glassPane);
+        scene = new Scene(content);
+        SkinManager.getUsedSkin().apply(scene);
     }
 
-    public YiScene(Parent root, double width, double height) {
-        super(root, width, height);
-        applySkin();
+    /**
+     * Sets the main content to be displayed in this scene.
+     *
+     * This method will not affect the glass pane state.
+     *
+     * @param contentRoot Root container for the content to show.
+     */
+    public void setContent(@NotNull Parent contentRoot) {
+        Objects.requireNonNull(contentRoot, "Content root must not be null");
+        content.getChildren().clear();
+        content.setCenter(contentRoot);
+        contentSet = true;
     }
 
-    private void applySkin() {
-        var skin = SkinManager.getUsedSkin();
-        var skinCss = skin.getMainCssUrl();
+    public Node getContent() {
+        return content.getCenter();
+    }
 
-        ObservableList<String> stylesheets = getStylesheets();
+    public boolean isContentSet() {
+        return contentSet;
+    }
 
-        stylesheets.add(skinCss);
-        for (Resource extraCss : EXTRA_STYLESHEETS) {
-            String resourceString = extraCss.getResourceUrlAsString();
-            stylesheets.add(resourceString);
+    public void installAccelerator(KeyCombination keyCombo, Runnable runnable) {
+        scene.getAccelerators().put(keyCombo, runnable);
+    }
+
+    public final Scene getScene() {
+        return scene;
+    }
+
+    private static final class GlassPane extends AnchorPane {
+
+        private GlassPane() {
+            getStyleClass().add(YiStyleClass.BACKGROUND_TRANSPARENT.getName());
         }
-    }
 
-    public static void addExtraStylesheet(String cssResourcePath, Class<?> resourceLoaderClass) {
-        var resource = new Resource(cssResourcePath, resourceLoaderClass);
-        EXTRA_STYLESHEETS.add(resource);
     }
 }
