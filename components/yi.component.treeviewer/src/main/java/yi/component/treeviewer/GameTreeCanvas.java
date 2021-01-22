@@ -38,6 +38,8 @@ final class GameTreeCanvas extends Canvas {
         addEventHandler(MouseEvent.MOUSE_PRESSED, handler::mousePressed);
         addEventHandler(MouseEvent.MOUSE_CLICKED, handler::mouseClicked);
         addEventHandler(MouseEvent.MOUSE_DRAGGED, handler::mouseDragged);
+        addEventHandler(MouseEvent.MOUSE_ENTERED, handler::mouseEntered);
+        addEventHandler(MouseEvent.MOUSE_EXITED, handler::mouseExited);
         addEventHandler(ScrollEvent.SCROLL, handler::mouseScrolled);
         addEventHandler(KeyEvent.KEY_PRESSED, handler::keyPressed);
     }
@@ -290,6 +292,8 @@ final class GameTreeCanvas extends Canvas {
         void mousePressed(MouseEvent e);
         void mouseClicked(MouseEvent e);
         void mouseDragged(MouseEvent e);
+        void mouseExited(MouseEvent e);
+        void mouseEntered(MouseEvent e);
         void mouseScrolled(ScrollEvent e);
 
         void keyPressed(KeyEvent e);

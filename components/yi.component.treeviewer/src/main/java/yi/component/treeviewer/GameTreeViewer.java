@@ -33,7 +33,7 @@ public final class GameTreeViewer implements YiComponent {
     private final Camera camera;
 
     private GameModel gameModel;
-    private GameTreeStructure treeStructure;
+    private final GameTreeStructure treeStructure = new GameTreeStructure();
     private final GameTreeElementSize elementSize;
     private final NullableProperty<GameNode> highlightedNode = new NullableProperty<>(null);
 
@@ -108,7 +108,7 @@ public final class GameTreeViewer implements YiComponent {
         }
 
         this.gameModel = model;
-        this.treeStructure = new GameTreeStructure(this.gameModel);
+        this.treeStructure.setGameModel(model);
 
         var currentNode = this.gameModel.getCurrentNode();
         TreeNodeElement currentNodeElement = this.treeStructure.getTreeNodeElementForNode(currentNode).orElseThrow();
@@ -149,9 +149,13 @@ public final class GameTreeViewer implements YiComponent {
         return treeStructure.getHighlightedNodePath();
     }
 
-    public void setHighlightedNodePath(@Nullable GameNode endPoint) {
-        treeStructure.setHighlightedNodePath(endPoint);
+    public void setHighlightedNodePathAndCenterCamera(@Nullable GameNode endPoint) {
+        setHighlightedNodePath(endPoint);
         updateCameraAndRender(endPoint != null ? endPoint : this.gameModel.getCurrentNode());
+    }
+
+    public void setHighlightedNodePath(GameNode endPoint) {
+        treeStructure.setHighlightedNodePath(endPoint);
     }
 
     /**
@@ -276,6 +280,16 @@ public final class GameTreeViewer implements YiComponent {
 
                 setBoundedOffset(offsetX + xDiff, offsetY + yDiff);
             }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            setHighlightedNodePath(null);
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
         }
 
         private void setBoundedOffset(double offsetX, double offsetY) {

@@ -6,6 +6,7 @@ import yi.core.go.GameModel;
 import yi.core.go.GameNode;
 import yi.core.go.rules.GameRulesHandler;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -47,15 +48,13 @@ public class GameTreeStructureCorrectnessTest {
                 .playMove(0, 1)
                 .playMove(0, 2);
 
-        var structure = new GameTreeStructure(model);
-
         var expectedStructure = new String[] {
                 "x",
                 "x",
                 "x",
                 "x"
         };
-        testTreeStructure(model, structure, expectedStructure);
+        testTreeStructure(model, expectedStructure);
     }
 
     @Test
@@ -71,8 +70,6 @@ public class GameTreeStructureCorrectnessTest {
                 .playMove(0, 2)
                 .playMove(0, 1)
                 .playMove(1, 0);
-
-        var structure = new GameTreeStructure(model);
 
         // Expected shape:
         // [x]
@@ -93,7 +90,7 @@ public class GameTreeStructureCorrectnessTest {
                 " x"
         };
 
-        testTreeStructure(model, structure, expectedStructure);
+        testTreeStructure(model, expectedStructure);
     }
 
     @Test
@@ -125,7 +122,7 @@ public class GameTreeStructureCorrectnessTest {
                 "xxxx",
         };
 
-        testTreeStructure(model, new GameTreeStructure(model), expectedStructure);
+        testTreeStructure(model, expectedStructure);
     }
 
     @Test
@@ -155,7 +152,7 @@ public class GameTreeStructureCorrectnessTest {
                 "xxx",
                 "xxx",
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedInitialStructure); // Sanity check
+        testTreeStructure(model, expectedInitialStructure); // Sanity check
 
         // Begin test
         model.beginMoveSequence().playMove(2, 1);
@@ -167,7 +164,7 @@ public class GameTreeStructureCorrectnessTest {
                 "x xx",
                 "xxxx",
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedStructure);
+        testTreeStructure(model, expectedStructure);
     }
 
     @Test
@@ -202,7 +199,7 @@ public class GameTreeStructureCorrectnessTest {
                 "x   x",
                 "xxxx ",
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedInitialStructure); // Sanity check
+        testTreeStructure(model, expectedInitialStructure); // Sanity check
 
         // Begin test
         model.beginMoveSequence().playMove(0, 2);
@@ -214,7 +211,7 @@ public class GameTreeStructureCorrectnessTest {
                 "x   x",
                 "xxxx ",
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedStructure);
+        testTreeStructure(model, expectedStructure);
 
         model.beginMoveSequence().playMove(0, 1);
         // Upon playing the move above, the last node of this variation will hit the track of a branch down below
@@ -227,7 +224,7 @@ public class GameTreeStructureCorrectnessTest {
                 "x   x ",
                 "xxxx  ",
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedStructure);
+        testTreeStructure(model, expectedStructure);
     }
 
     @Test
@@ -262,7 +259,7 @@ public class GameTreeStructureCorrectnessTest {
                 "x  ",
                 "xxx",
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedInitialStructure); // Sanity check
+        testTreeStructure(model, expectedInitialStructure); // Sanity check
 
         // Current setup:
         //  [x] ===[|?] <- Expand a branch here that is 6 nodes long, it should cascade down the columns and expand to the right when necessary
@@ -287,7 +284,7 @@ public class GameTreeStructureCorrectnessTest {
                 "x  ",
                 "xxx",
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedStructure);
+        testTreeStructure(model, expectedStructure);
 
         model.beginMoveSequence().playMove(2, 1);
         expectedStructure = new String[] {
@@ -298,7 +295,7 @@ public class GameTreeStructureCorrectnessTest {
                 "x  ",
                 "xxx"
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedStructure);
+        testTreeStructure(model, expectedStructure);
 
         model.beginMoveSequence().playMove(2, 0);
         expectedStructure = new String[] {
@@ -309,7 +306,7 @@ public class GameTreeStructureCorrectnessTest {
                 "x  ",
                 "xxx"
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedStructure);
+        testTreeStructure(model, expectedStructure);
 
         model.beginMoveSequence().playMove(1, 2);
         expectedStructure = new String[] {
@@ -320,7 +317,7 @@ public class GameTreeStructureCorrectnessTest {
                 "x  x",
                 "xxx "
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedStructure);
+        testTreeStructure(model, expectedStructure);
 
         model.beginMoveSequence().playMove(0, 2);
         expectedStructure = new String[] {
@@ -331,9 +328,10 @@ public class GameTreeStructureCorrectnessTest {
                 "x  x",
                 "xxxx"
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedStructure);
+        testTreeStructure(model, expectedStructure);
     }
 
+    @Test
     public void testColumnAdjust_newBranchInWideBranch_movedToOutside() {
         // Tests the following situation:
         //
@@ -345,11 +343,13 @@ public class GameTreeStructureCorrectnessTest {
         //  |             |
         // [x]           [x]
         //  |             |
+        // [x]           [x]
+        //  |             |
         // [x]-------|   [x]
-        //  |        |    |
-        // [x]---|  [x]  [x]
-        //  |    |
-        // [x]  [x]
+        //  |        |
+        // [x]---|  [x]
+        //  |    |   |
+        // [x]  [x] [x]
         //
         var model = new GameModel(3, 3, new TestingRules());
 
@@ -358,7 +358,6 @@ public class GameTreeStructureCorrectnessTest {
                 .playMove(0, 0)
                 .playMove(0, 1)
                 .playMove(0, 2)
-                .playMove(1, 0)
                 .playMove(1 ,1)
                 .playMove(1, 2)
                 .playMove(2, 0)
@@ -373,21 +372,24 @@ public class GameTreeStructureCorrectnessTest {
         model.setCurrentNode(model.getRootNode());
 
         // Create wide branch from root
-        model.beginMoveSequence().playMove(0, 1).playMove(0, 2);
+        model.beginMoveSequence().playMove(0, 1).playMove(0, 2)
+                .playMove(1,1).playMove(2, 2).playMove(2, 0);
         model.toPreviousNode(2);
 
         String[] expectedInitialStructure = {
                 "x   ",
                 "x  x",
                 "x  x",
-                "x   ",
-                "x   ",
+                "x  x",
+                "x  x",
+                "x  x",
                 "x x ",
-                "xx  ",
+                "xxx ",
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedInitialStructure); // Sanity check
+        testTreeStructure(model, expectedInitialStructure); // Sanity check
 
         // Begin test
+        model.setCurrentNode(model.getRootNode());
         model.beginMoveSequence().playMove(2, 2);
 
         // Assert
@@ -395,17 +397,21 @@ public class GameTreeStructureCorrectnessTest {
                 "x    ",
                 "x  xx", // <-- Expect the outer 'x' rather than "xx x"
                 "x  x ",
-                "x    ",
-                "x    ",
+                "x  x ",
+                "x  x ",
+                "x  x ",
                 "x x  ",
-                "xx   ",
+                "xxx  ",
         };
-        testTreeStructure(model, new GameTreeStructure(model), expectedStructure); // Sanity check
+        testTreeStructure(model, expectedStructure); // Sanity check
     }
 
-    private void testTreeStructure(GameModel model, GameTreeStructure structure, String[] expectedStructure) {
+    private void testTreeStructure(GameModel model, String[] expectedStructure) {
         boolean[][] grids = generateExpectedGridSpace(expectedStructure);
         boolean[][] actualGrid = new boolean[grids.length][grids[0].length];
+
+        var structure = new GameTreeStructure();
+        structure.setGameModel(model);
 
         // Probe the entire structure to check if it complies
         for (int x = 0; x < grids.length; ++x) {
@@ -430,6 +436,7 @@ public class GameTreeStructureCorrectnessTest {
             actualStructure[row] = rowData.toString();
         }
 
+        System.out.println(Arrays.toString(actualStructure));
         assertArrayEquals(expectedStructure, actualStructure, "Actual structure may be incomplete as only the space defined by the expected structure is checked.");
 
         // Check the branch nodes in detail

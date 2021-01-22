@@ -105,7 +105,7 @@ public class EditorWindow extends Stage {
         treeViewer.addPreviewNodeChangeListener(boardArea::onHighlightedNodeChange);
         boardArea.getGameBoardViewer().addPreviewNodeChangeListener(newPreview -> {
             if (newPreview != treeViewer.getHighlightedNode()) {
-                treeViewer.setHighlightedNodePath(newPreview);
+                treeViewer.setHighlightedNodePathAndCenterCamera(newPreview);
             }
 
             var nodeToShowCommentsFor = newPreview == null

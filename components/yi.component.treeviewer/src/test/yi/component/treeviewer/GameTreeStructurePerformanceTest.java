@@ -139,7 +139,8 @@ public class GameTreeStructurePerformanceTest {
         // Warm up the VM by doing a few dry runs.
         // Most of the time the fresh start is slower than subsequent attempts because of initialization overhead
         for (int i = 0; i < 3; ++i) {
-            new GameTreeStructure(model);
+            var structure = new GameTreeStructure();
+            structure.setGameModel(model);
         }
 
         long average = 0;
@@ -147,7 +148,8 @@ public class GameTreeStructurePerformanceTest {
 
         for (int i = 0; i < trials; ++i) {
             long startTime = System.nanoTime();
-            new GameTreeStructure(model);
+            var structure = new GameTreeStructure();
+            structure.setGameModel(model);
             long endTime = System.nanoTime();
 
             long timeElapsed = endTime - startTime;

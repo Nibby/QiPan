@@ -15,13 +15,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 final class GameTreeStructure {
 
-    private final GameModel gameModel;
+    private GameModel gameModel;
     private final TreeElementManager treeElementManager;
 
-    public GameTreeStructure(GameModel gameModel) {
-        this.gameModel = gameModel;
+    public GameTreeStructure() {
         this.treeElementManager = new TreeElementManager();
+    }
 
+    public void setGameModel(GameModel model) {
+        this.gameModel = model;
         reconstruct();
     }
 
@@ -173,6 +175,8 @@ final class GameTreeStructure {
 
             allElements = new ArrayList<>();
             positionStorage = new TreeElementPositionStorage();
+            gameNodeToTreeElement.clear();
+            currentHighlight = null;
         }
 
         /**
