@@ -4,6 +4,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
 import yi.component.shared.Property;
 import yi.component.shared.PropertyListener;
+import yi.component.shared.component.YiStyleClass;
 import yi.component.shared.component.YiToggleButton;
 import yi.component.shared.utilities.GuiUtilities;
 import yi.editor.EditorWindow;
@@ -60,7 +61,7 @@ public class EditorReviewToolsToolBar extends ToolBar {
         addReviewTools();
         getItems().add(GuiUtilities.createDynamicSpacer());
 
-        getStyleClass().add("bg-black-60");
+        getStyleClass().add(YiStyleClass.BACKGROUND_BLACK_60_PERCENT.getName());
     }
 
     public void setContentForLayout(EditorPerspective layout) {

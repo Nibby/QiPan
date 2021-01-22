@@ -111,24 +111,12 @@
   -fx-background-insets: 0px;
 }
 
-.bg-radius-0 {
-  -fx-border-radius: 0;
-}
-
-.bg-transparent {
-  -fx-background-color: transparent;
-}
-
 .bg-dark {
   -fx-background-color: #2B2B2B;
 }
 
 .bg-dark-secondary {
   -fx-background-color: #333333;
-}
-
-.bg-black-60 {
-  -fx-background-color: rgba(0, 0, 0, 0.6);
 }
 
 .fg-dark {
@@ -141,30 +129,6 @@
 
 .fg-light {
   -fx-text-fill: #DDDDDD;
-}
-
-.font-weight-bold {
-  -fx-font-weight: bold;
-}
-
-.font-weight-normal {
-  -fx-font-weight: normal;
-}
-
-.font-size-16 {
-  -fx-font-size: 16;
-}
-
-.font-size-14 {
-  -fx-font-size: 14;
-}
-
-.pref-height-28 {
-  -fx-pref-height: 28;
-}
-
-.border-insets-0 {
-  -fx-border-insets: 0;
 }
 
 /* Component presets */

@@ -12,13 +12,18 @@ import java.util.Optional;
  */
 public final class Skin {
 
-    private static final String MAIN_CSS_FILE = "skin.css";
-    private static final String SETTINGS_FILE = "settings.json";
+    private static final String COMMON_CSS_FILE = "/yi/component/shared/skins/common.css";
+    private static final String MAIN_CSS_FILE_NAME = "skin.css";
+    private static final String SETTINGS_FILE_NAME = "settings.json";
+
+    static {
+        YiScene.addExtraStylesheet(COMMON_CSS_FILE, Skin.class);
+    }
 
     private final String mainCssUrl;
 
     private Skin(URL directoryUrl) {
-        this.mainCssUrl = directoryUrl.toString() + MAIN_CSS_FILE;
+        this.mainCssUrl = directoryUrl.toString() + MAIN_CSS_FILE_NAME;
         loadData();
     }
 
@@ -29,7 +34,7 @@ public final class Skin {
 
     private String toMainCssUrl(Path directory) {
         try {
-            Path stylesheetPath = directory.resolve(MAIN_CSS_FILE);
+            Path stylesheetPath = directory.resolve(MAIN_CSS_FILE_NAME);
             URI pathUri = stylesheetPath.toUri();
             URL pathUrl = pathUri.toURL();
             return pathUrl.toString();
@@ -60,8 +65,8 @@ public final class Skin {
      */
     public static boolean isSkinDirectory(Path directory) {
         boolean isDirectory = Files.isDirectory(directory);
-        boolean hasMainCss = Files.exists(directory.resolve(MAIN_CSS_FILE));
-        boolean hasSettings = Files.exists(directory.resolve(SETTINGS_FILE));
+        boolean hasMainCss = Files.exists(directory.resolve(MAIN_CSS_FILE_NAME));
+        boolean hasSettings = Files.exists(directory.resolve(SETTINGS_FILE_NAME));
 
         return isDirectory && hasMainCss && hasSettings;
     }

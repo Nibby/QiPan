@@ -1,0 +1,39 @@
+/*
+    Shared CSS definition that provide general 'lego-block' style classes that should be
+    aesthetically identical across skins.
+ */
+.bg-radius-0 {
+    -fx-border-radius: 0;
+}
+
+.bg-transparent {
+    -fx-background-color: transparent;
+}
+
+.bg-black-60 {
+    -fx-background-color: rgba(0, 0, 0, 0.6);
+}
+
+.font-weight-bold {
+    -fx-font-weight: bold;
+}
+
+.font-weight-normal {
+    -fx-font-weight: normal;
+}
+
+.font-size-16 {
+    -fx-font-size: 16;
+}
+
+.font-size-14 {
+    -fx-font-size: 14;
+}
+
+.pref-height-28 {
+    -fx-pref-height: 28;
+}
+
+.border-insets-0 {
+    -fx-border-insets: 0;
+}
