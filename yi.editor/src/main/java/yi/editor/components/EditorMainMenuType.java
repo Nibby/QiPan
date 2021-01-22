@@ -9,8 +9,8 @@ public enum EditorMainMenuType {
 
     FILE(0, EditorTextResources.MENU_FILE),
     EDIT(1, EditorTextResources.MENU_EDIT),
-    TOOLS(2, EditorTextResources.MENU_TOOLS),
-    NAVIGATE(3, EditorTextResources.MENU_NAVIGATE),
+    NAVIGATE(2, EditorTextResources.MENU_NAVIGATE),
+    TOOLS(3, EditorTextResources.MENU_TOOLS),
     VIEW(4, EditorTextResources.MENU_VIEW),
     HELP(5, EditorTextResources.MENU_HELP),
 
