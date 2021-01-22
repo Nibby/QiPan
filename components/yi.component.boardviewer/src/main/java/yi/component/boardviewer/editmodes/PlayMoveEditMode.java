@@ -57,9 +57,6 @@ public final class PlayMoveEditMode extends AbstractEditMode {
             manager.edit.submit(playMoveEdit);
 
             playSounds(manager, playMoveEdit);
-        } else {
-            // TODO: This is only temporary.
-            manager.getGameModel().getEditor().addPass();
         }
     }
 
