@@ -5,6 +5,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 import yi.component.shared.component.YiComponent;
+import yi.component.shared.component.YiStyleClass;
 import yi.core.go.EventListener;
 import yi.core.go.GameModel;
 import yi.core.go.GameNode;
@@ -27,8 +28,14 @@ public final class GameCommentViewer implements YiComponent {
     public GameCommentViewer() {
         container = new BorderPane();
         container.setCenter(commentEditor);
-        commentEditor.getStyleClass().add("editor-comment-viewer");
-        commentEditor.getStyleClass().add("fg-dark-secondary");
+        commentEditor.getStyleClass().addAll(
+            YiStyleClass.BACKGROUND_DARK_SECONDARY.getName(),
+            YiStyleClass.BACKGROUND_RADIUS_0.getName(),
+            YiStyleClass.BORDER_INSETS_0.getName(),
+            YiStyleClass.FOREGROUND_DARK.getName(),
+            YiStyleClass.FONT_SIZE_14.getName(),
+            YiStyleClass.DARK_SCROLL_PANE_CONTAINER.getName()
+        );
         commentEditor.setWrapText(true);
         commentEditor.caretPositionProperty().addListener((evt, oldValue, newValue) -> {
             if (nodeToShow != null) {

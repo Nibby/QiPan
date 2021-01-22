@@ -111,12 +111,20 @@
   -fx-background-insets: 0px;
 }
 
+.bg-radius-0 {
+  -fx-border-radius: 0;
+}
+
 .bg-transparent {
   -fx-background-color: transparent;
 }
 
-.bg-black-50 {
-  -fx-background-color: rgba(0, 0, 0, 0.5);
+.bg-dark {
+  -fx-background-color: #2B2B2B;
+}
+
+.bg-dark-secondary {
+  -fx-background-color: #333333;
 }
 
 .bg-black-60 {
@@ -131,56 +139,56 @@
   -fx-text-fill: #7B7B7B;
 }
 
-.editor-player-name-hud-label {
-  -fx-text-fill: white;
+.fg-light {
+  -fx-text-fill: #DDDDDD;
+}
+
+.font-weight-bold {
   -fx-font-weight: bold;
-  -fx-font-size: 16px;
-  -fx-pref-height: 28px;
 }
 
-.editor-player-rank-hud-label {
-  -fx-text-fill: #c8c8c8;
+.font-weight-normal {
   -fx-font-weight: normal;
-  -fx-font-size: 14px;
 }
 
-.editor-move-number-hud-label {
-  -fx-text-fill: #afafaf;
+.font-size-16 {
+  -fx-font-size: 16;
 }
 
-.editor-player-info-toolbar {
-  -fx-background-color: #282828;
+.font-size-14 {
+  -fx-font-size: 14;
 }
 
-.editor-comment-viewer {
-  -fx-background-color: #333333;
-  -fx-focus-traversable: false;
-  -fx-background-radius: 0px;
-  -fx-border-insets: 0px;
-  -fx-text-fill: #CCCCCC;
-  -fx-font-size: 14px;
+.pref-height-28 {
+  -fx-pref-height: 28;
 }
-.editor-comment-viewer .scroll-pane {
-  -fx-background-color: #333333;
-  -fx-background-radius: 0px;
+
+.border-insets-0 {
+  -fx-border-insets: 0;
 }
-.editor-comment-viewer .scroll-pane .content {
+
+/* Component presets */
+.dark-scroll-pane-container .scroll-pane {
   -fx-background-color: #333333;
   -fx-background-radius: 0px;
 }
-.editor-comment-viewer .scroll-pane *.scroll-bar {
+.dark-scroll-pane-container .scroll-pane .content {
+  -fx-background-color: #333333;
+  -fx-background-radius: 0px;
+}
+.dark-scroll-pane-container .scroll-pane *.scroll-bar {
   -fx-background-color: #333333;
 }
-.editor-comment-viewer .scroll-pane *.scroll-bar .decrement-button {
+.dark-scroll-pane-container .scroll-pane *.scroll-bar .decrement-button {
   -fx-background-color: inherit;
 }
-.editor-comment-viewer .scroll-pane *.scroll-bar .track {
+.dark-scroll-pane-container .scroll-pane *.scroll-bar .track {
   -fx-background-color: inherit;
 }
-.editor-comment-viewer .scroll-pane *.scroll-bar .thumb {
+.dark-scroll-pane-container .scroll-pane *.scroll-bar .thumb {
   -fx-background-color: #7B7B7B;
 }
-.editor-comment-viewer .scroll-pane *.scroll-bar .increment-button {
+.dark-scroll-pane-container .scroll-pane *.scroll-bar .increment-button {
   -fx-background-color: inherit;
 }
 

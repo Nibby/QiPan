@@ -6,6 +6,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.jetbrains.annotations.NotNull;
+import yi.component.shared.component.YiStyleClass;
 import yi.component.shared.i18n.TextResource;
 import yi.component.shared.utilities.GuiUtilities;
 import yi.component.shared.utilities.IconUtilities;
@@ -92,17 +93,32 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
 
     public EditorFooterToolBar() {
         // TODO: Consider putting these CSS class strings into a constant class ...
-        playerBlackName.getStyleClass().add("editor-player-name-hud-label");
-        playerBlackName.setMaxWidth(160);
-        playerBlackRank.getStyleClass().add("editor-player-rank-hud-label");
-        playerBlackRank.setMaxWidth(50);
-        playerWhiteName.getStyleClass().add("editor-player-name-hud-label");
-        playerWhiteName.setMaxWidth(160);
-        playerWhiteRank.getStyleClass().add("editor-player-rank-hud-label");
-        playerWhiteRank.setMaxWidth(50);
+        decorateAsNameLabel(playerBlackName);
+        decorateAsNameLabel(playerWhiteName);
+        decorateAsRankLabel(playerBlackRank);
+        decorateAsRankLabel(playerWhiteRank);
 
-        moveLabel.getStyleClass().add("editor-move-number-hud-label");
-        getStyleClass().add("editor-player-info-toolbar");
+        moveLabel.getStyleClass().add(YiStyleClass.FOREGROUND_DARK.getName());
+        getStyleClass().add(YiStyleClass.BACKGROUND_DARK.getName());
+    }
+
+    private void decorateAsRankLabel(Label label) {
+        label.getStyleClass().addAll(
+            YiStyleClass.FOREGROUND_DARK_SECONDARY.getName(),
+            YiStyleClass.FONT_WEIGHT_NORMAL.getName(),
+            YiStyleClass.FONT_SIZE_14.getName()
+        );
+        label.setMaxWidth(50);
+    }
+
+    private void decorateAsNameLabel(Label label) {
+        label.getStyleClass().addAll(
+            YiStyleClass.FOREGROUND_LIGHT.getName(),
+            YiStyleClass.FONT_WEIGHT_BOLD.getName(),
+            YiStyleClass.FONT_SIZE_16.getName(),
+            YiStyleClass.PREFERRED_HEIGHT_28.getName()
+        );
+        label.setMaxWidth(160);
     }
 
     private void updateGameModelInfo(GameModel gameModel) {
