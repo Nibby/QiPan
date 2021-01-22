@@ -61,6 +61,13 @@ public enum EditorAccelerator {
     PASS("pass", EditorTextResources.PASS, KeyCode.P, new KeyModifier[] { KeyModifier.SHORTCUT }),
     REMOVE_NODE("removeNode", EditorTextResources.REMOVE_NODE, KeyCode.BACK_SPACE, new KeyModifier[0]),
 
+    TO_PREVIOUS_NODE("toPreviousNode", EditorTextResources.TO_PREVIOUS_NODE, KeyCode.UP, new KeyModifier[0]),
+    TO_PREVIOUS_10_NODES("toPrevious10Nodes", EditorTextResources.TO_PREVIOUS_10_NODES, KeyCode.UP, new KeyModifier[] { KeyModifier.SHORTCUT }),
+    TO_ROOT_NODE("toRootNode", EditorTextResources.TO_ROOT_NODE, KeyCode.UP, new KeyModifier[] { KeyModifier.SHIFT, KeyModifier.SHORTCUT }),
+    TO_NEXT_NODE("toNextNode", EditorTextResources.TO_NEXT_NODE, KeyCode.DOWN, new KeyModifier[0]),
+    TO_NEXT_10_NODES("toNext10Nodes", EditorTextResources.TO_NEXT_10_NODES, KeyCode.DOWN, new KeyModifier[] { KeyModifier.SHORTCUT }),
+    TO_VARIATION_END("toVariationEnd", EditorTextResources.TO_VARIATION_END, KeyCode.DOWN, new KeyModifier[] { KeyModifier.SHIFT, KeyModifier.SHORTCUT }),
+
     TEST_ACCEL_1("testAccel1", EditorTextResources.EMPTY, KeyCode.DIGIT1, new KeyModifier[] { KeyModifier.CTRL, KeyModifier.ALT, KeyModifier.SHIFT }),
     TEST_ACCEL_2("testAccel2", EditorTextResources.EMPTY, KeyCode.DIGIT2, new KeyModifier[] { KeyModifier.CTRL, KeyModifier.ALT, KeyModifier.SHIFT }),
 

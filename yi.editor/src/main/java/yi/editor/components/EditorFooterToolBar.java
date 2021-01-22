@@ -12,10 +12,12 @@ import yi.component.shared.utilities.IconUtilities;
 import yi.core.go.GameModel;
 import yi.core.go.GameModelInfo;
 import yi.editor.EditorWindow;
+import yi.editor.framework.EditorAccelerator;
 import yi.editor.framework.EditorTextResources;
 import yi.editor.framework.action.EditorAction;
 import yi.editor.framework.action.EditorActionManager;
 import yi.editor.framework.action.EditorBasicAction;
+import yi.editor.framework.action.EditorSeparatorAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,38 +37,56 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
     private final EditorAction toPrevious1Action = createNavAction(
             EditorTextResources.TO_PREVIOUS_NODE,
             GameModel::toPreviousNode,
-            "/yi/editor/icons/arrowUp_white32.png"
+            "/yi/editor/icons/arrowUp_white32.png",
+            EditorAccelerator.TO_PREVIOUS_NODE,
+            0d
     );
 
     private final EditorAction toPrevious10Action = createNavAction(
             EditorTextResources.TO_PREVIOUS_10_NODES,
             model -> model.toPreviousNode(10),
-            "/yi/editor/icons/arrowUpDouble_white32.png"
+            "/yi/editor/icons/arrowUpDouble_white32.png",
+            EditorAccelerator.TO_PREVIOUS_10_NODES,
+            0.01d
     );
 
     private final EditorAction toRootAction = createNavAction(
             EditorTextResources.TO_ROOT_NODE,
             model -> model.setCurrentNode(model.getRootNode()),
-            "/yi/editor/icons/arrowUpmost_white32.png"
+            "/yi/editor/icons/arrowUpmost_white32.png",
+            EditorAccelerator.TO_ROOT_NODE,
+            0.02d
     );
 
     private final EditorAction toNext1Action = createNavAction(
             EditorTextResources.TO_NEXT_NODE,
             GameModel::toNextNode,
-            "/yi/editor/icons/arrowDown_white32.png"
+            "/yi/editor/icons/arrowDown_white32.png",
+            EditorAccelerator.TO_NEXT_NODE,
+            0.03d
     );
 
     private final EditorAction toNext10Action = createNavAction(
             EditorTextResources.TO_NEXT_10_NODES,
             model -> model.toNextNode(10),
-            "/yi/editor/icons/arrowDownDouble_white32.png"
+            "/yi/editor/icons/arrowDownDouble_white32.png",
+            EditorAccelerator.TO_NEXT_10_NODES,
+            0.04d
     );
 
     private final EditorAction toVariationEndAction = createNavAction(
             EditorTextResources.TO_VARIATION_END,
             model -> model.toNextNode(Integer.MAX_VALUE),
-            "/yi/editor/icons/arrowDownmost_white32.png"
+            "/yi/editor/icons/arrowDownmost_white32.png",
+            EditorAccelerator.TO_VARIATION_END,
+            0.05d
     );
+
+    {
+        var navMenuSeparator = new EditorSeparatorAction();
+        navMenuSeparator.setInMenuBar(EditorMainMenuType.NAVIGATE, 0.025d);
+        navActions.add(navMenuSeparator);
+    }
 
     private final Label moveLabel = new Label("");
 
@@ -157,19 +177,24 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
         );
     }
 
-    private EditorAction createNavAction(TextResource text, Consumer<GameModel> action, String iconPath) {
+    private EditorAction createNavAction(TextResource text,
+                                         Consumer<GameModel> action,
+                                         String iconPath,
+                                         EditorAccelerator accelerator,
+                                         double menuPosition) {
         var actionItem = new EditorBasicAction(text, context -> {
             EditorWindow window = context.getEditorWindow();
             GameModel model = window.getGameModel();
             action.accept(model);
         });
-        ImageView originalIconView = IconUtilities.loadIcon(iconPath, EditorFooterToolBar.class, 16).orElse(null);
-        Image icon = null;
-        if (originalIconView != null) {
+        actionItem.setInMenuBar(EditorMainMenuType.NAVIGATE, menuPosition);
+        IconUtilities.loadIcon(iconPath, EditorFooterToolBar.class, 16).ifPresent(originalIconView -> {
             Image originalIcon = originalIconView.getImage();
-            icon = IconUtilities.flatColorSwap(originalIcon, 180, 180, 180);
+            Image icon = IconUtilities.flatColorSwap(originalIcon, 180, 180, 180);
             actionItem.setIcon(new ImageView(icon));
-        }
+        });
+        actionItem.setAccelerator(accelerator);
+        actionItem.setShowIconOnMenuItem(false);
         actionItem.setComponentCompact(true);
 
         Node button = actionItem.getAsComponent();

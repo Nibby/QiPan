@@ -4,7 +4,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
@@ -23,16 +22,15 @@ import yi.core.go.GameModelImporter;
 import yi.core.go.GameParseException;
 import yi.core.go.StandardGameRules;
 import yi.editor.components.*;
-import yi.editor.components.EditorComponent;
 import yi.editor.framework.EditorHelper;
 import yi.editor.framework.EditorTextResources;
 import yi.editor.framework.action.EditorAction;
 import yi.editor.framework.action.EditorActionManager;
+import yi.editor.hack.Hacks;
 import yi.editor.settings.EditorSettings;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -286,32 +284,9 @@ public class EditorWindow extends Stage {
     private void setYiScene(@NotNull YiScene newScene) {
         Objects.requireNonNull(newScene, "Scene must not be null");
         if (SystemUtilities.isMac()) {
-            fixSingleKeyAcceleratorsForMac(newScene);
+            Hacks.fixSingleKeyAcceleratorsForMac(actionManager.getAllActions(), newScene);
         }
         setScene(newScene);
-    }
-
-    /*
-        On macOS, menu item shortcuts don't work when the key combination does not contain
-        at least one modifier. To support those accelerators, we manually register them
-        to the scene here.
-     */
-    private void fixSingleKeyAcceleratorsForMac(YiScene scene) {
-        for (EditorAction action : actionManager.getAllActions()) {
-            action.getAccelerator().ifPresent(accelerator -> {
-                KeyCombination keyCombination = accelerator.getKeyCombination();
-                KeyCombination.ModifierValue[] modifiers = new KeyCombination.ModifierValue[] {
-                    keyCombination.getAlt(),
-                    keyCombination.getControl(),
-                    keyCombination.getMeta(),
-                    keyCombination.getShift(),
-                    keyCombination.getShortcut(),
-                };
-                if (Arrays.stream(modifiers).noneMatch(modifier -> modifier == KeyCombination.ModifierValue.DOWN)) {
-                    scene.getAccelerators().put(keyCombination, action::performAction);
-                }
-            });
-        }
     }
 
     public Parent getBoardComponent() {

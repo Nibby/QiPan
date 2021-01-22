@@ -24,6 +24,7 @@ public final class EditorTextResources {
     public static final TextResource MENU_PERSPECTIVE = standardResource("menu.perspective");
 
     public static final TextResource MENU_TOOLS = standardResource("menu.tools");
+    public static final TextResource MENU_NAVIGATE = standardResource("menu.navigate");
     public static final TextResource MENU_VIEW = standardResource("menu.view");
     public static final TextResource MENU_WINDOW = standardResource("menu.window");
     public static final TextResource MENU_HELP = standardResource("menu.help");
