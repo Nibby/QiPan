@@ -3,6 +3,7 @@ package yi.component.shared.component;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -19,18 +20,20 @@ import java.util.Objects;
 public final class YiScene {
 
     private final Scene scene;
+    private final BorderPane sceneRoot = new BorderPane();
     private final StackPane parentStack = new StackPane();
 
-    private BorderPane content;
-    private GlassPane glassPane;
+    private final BorderPane content;
+    private final GlassPane glassPane;
     private boolean contentSet = false;
 
     public YiScene() {
         content = new BorderPane();
         glassPane = new GlassPane();
 
-//        parentStack.getChildren().addAll(content, glassPane);
-        scene = new Scene(content);
+        parentStack.getChildren().addAll(content);
+        sceneRoot.setCenter(parentStack);
+        scene = new Scene(sceneRoot);
         SkinManager.getUsedSkin().apply(scene);
     }
 
@@ -62,6 +65,14 @@ public final class YiScene {
 
     public final Scene getScene() {
         return scene;
+    }
+
+    protected final void setMainMenuBar(MenuBar menuBar) {
+        Node existingMenuBar = sceneRoot.getTop();
+        if (existingMenuBar != null) {
+            sceneRoot.getChildren().remove(existingMenuBar);
+        }
+        sceneRoot.setTop(menuBar);
     }
 
     private static final class GlassPane extends AnchorPane {

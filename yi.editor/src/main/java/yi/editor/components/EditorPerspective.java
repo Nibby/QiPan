@@ -73,7 +73,7 @@ public enum EditorPerspective {
 
             var sideSplit = new SplitPane(tree, commentArea);
             sideSplit.setOrientation(Orientation.VERTICAL);
-            sideSplit.getDividers().get(0).setPosition(0.7d);
+            sideSplit.getDividers().get(0).setPosition(0.6d);
 
             var splitPane = new SplitPane(boardpane, sideSplit);
             content.setCenter(splitPane);

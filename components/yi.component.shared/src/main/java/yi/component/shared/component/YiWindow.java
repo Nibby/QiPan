@@ -1,5 +1,6 @@
-package yi.component.shared;
+package yi.component.shared.component;
 
+import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
 import yi.component.shared.component.YiScene;
 
@@ -15,6 +16,10 @@ public class YiWindow {
         this.stage = new Stage();
         this.scene = new YiScene();
         this.stage.setScene(scene.getScene());
+    }
+
+    public void setMainMenuBar(MenuBar menuBar) {
+        scene.setMainMenuBar(menuBar);
     }
 
     public void setWidth(double width) {

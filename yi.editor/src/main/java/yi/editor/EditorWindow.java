@@ -9,7 +9,7 @@ import yi.component.boardviewer.GameBoardViewer;
 import yi.component.commentviewer.GameCommentViewer;
 import yi.component.shared.property.Property;
 import yi.component.shared.property.PropertyListener;
-import yi.component.shared.YiWindow;
+import yi.component.shared.component.YiWindow;
 import yi.component.shared.component.FontManager;
 import yi.component.shared.utilities.GuiUtilities;
 import yi.component.shared.utilities.SystemUtilities;
@@ -211,7 +211,7 @@ public class EditorWindow extends YiWindow {
         // menu bars...
         var addMenuBar = SystemUtilities.isMac() && !addedMenuBarOnce || !menuBar.isUseSystemMenuBar();
         if (addMenuBar) {
-            controlPane.setTop(menuBar);
+            setMainMenuBar(menuBar);
         }
         if (!addedMenuBarOnce) {
             addedMenuBarOnce = true;

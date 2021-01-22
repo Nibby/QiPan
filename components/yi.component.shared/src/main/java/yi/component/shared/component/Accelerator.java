@@ -4,7 +4,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import org.jetbrains.annotations.NotNull;
-import yi.component.shared.YiWindow;
 import yi.component.shared.i18n.TextResource;
 import yi.component.shared.utilities.GuiUtilities;
 

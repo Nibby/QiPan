@@ -49,7 +49,7 @@ public final class SkinManager {
 
     /**
      * Adds one additional CSS file entry to be used by all skins when applied to the
-     * {@link yi.component.shared.YiWindow}. The file will be loaded using the class loader
+     * {@link YiWindow}. The file will be loaded using the class loader
      * in the module of the CSS file.
      *
      * @param cssResourcePath Internal resource path for the CSS file.
