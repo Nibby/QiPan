@@ -28,12 +28,17 @@ public enum YiStyleClass {
     PREFERRED_HEIGHT_28("pref-height-28"),
 
     BORDER_INSETS_0("border-insets-0"),
+    PADDING_10("padding-10"),
+
 
     /**
      * Applied to the parent container that will contain a scroll pane as a child, and
      * applies dark color scheme to it.
      */
-    DARK_SCROLL_PANE_CONTAINER("dark-scroll-pane-container")
+    DARK_SCROLL_PANE_CONTAINER("dark-scroll-pane-container"),
+
+    MODAL_CONTENT_CONTAINER("modal-content-container"),
+    DEFAULT_BUTTON("button-default")
     ;
 
     private final String cssClassName;

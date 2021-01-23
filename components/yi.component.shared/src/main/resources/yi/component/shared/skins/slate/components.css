@@ -1,3 +1,21 @@
+.modal-content-container {
+  -fx-background-color: #333333;
+  -fx-background-radius: 10px;
+  -fx-border-radius: 10px;
+  -fx-border-width: 3px;
+  -fx-border-color: #2B2B2B;
+}
 
+.modal-content-info {
+  -fx-border-color: #4A7BB0;
+}
+
+.modal-content-warning {
+  -fx-border-color: #ffa03b;
+}
+
+.modal-content-error {
+  -fx-border-color: #b72121;
+}
 
 /*# sourceMappingURL=components.css.map */

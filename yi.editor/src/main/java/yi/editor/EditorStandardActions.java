@@ -1,8 +1,14 @@
 package yi.editor;
 
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
+import yi.component.shared.component.modal.YiAbstractModalPane;
+import yi.component.shared.component.modal.YiModalContent;
 import yi.core.go.GameModel;
 import yi.core.go.GameNode;
 import yi.core.go.editor.GameModelEditor;
@@ -38,6 +44,38 @@ final class EditorStandardActions implements EditorComponent<Object> {
         createPassAction();
         createDivider(EditorMainMenuType.EDIT, 0.1001d);
         createRemoveNodeAction();
+
+        createTestModalAction();
+    }
+
+    private void createTestModalAction() {
+//        var actionItem = new EditorBasicAction(EditorTextResources.MENU_DEBUG,
+//                context -> {
+//                    var modal = new YiAbstractModalPane() {
+//                        @Override
+//                        public @NotNull Pane createContent() {
+//                            BorderPane p = new BorderPane();
+//                            p.setPrefSize(500, 400);
+//                            p.setMinSize(500, 400);
+//                            p.setMaxSize(500, 400);
+//                            return p;
+//                        }
+//
+//                        @Override
+//                        public boolean isStrictModal() {
+//                            return false;
+//                        }
+//
+//                        @Override
+//                        public boolean isContentDimmed() {
+//                            return true;
+//                        }
+//                    };
+//
+//                    context.getEditorWindow().pushModalContent(modal);
+//                });
+//        actionItem.setInMenuBar(EditorMainMenuType.HELP, 0d);
+//        standardActions.add(actionItem);
     }
 
     private void createRemoveNodeAction() {

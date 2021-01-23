@@ -16,26 +16,26 @@
   -fx-text-fill: $FOREGROUND_DARK
 
 .menu:hover, .menu:showing
-  -fx-background-color: $CONTROLS_BACKGROUND_HOVER
+  -fx-background-color: $LIGHT_CONTROLS_BACKGROUND_HOVER
 
   .label
-    -fx-text-fill: $CONTROLS_FOREGROUND_LIGHT
+    -fx-text-fill: $LIGHT_CONTROLS_FOREGROUND
 
 // Only style selected menu inside main menus.
 .menu:showing > .menu:showing
-  -fx-background-color: $CONTROLS_BACKGROUND_SELECTED
+  -fx-background-color: $LIGHT_CONTROLS_BACKGROUND_SELECTED
 
 .context-menu
-  -fx-background-color: $CONTROLS_BACKGROUND_HOVER
+  -fx-background-color: $LIGHT_CONTROLS_BACKGROUND_HOVER
   -fx-padding: 0px
   -fx-box-border: transparent
   -fx-border-insets: 0px
 
 .menu-item .label
-  -fx-text-fill: $CONTROLS_FOREGROUND_LIGHT
+  -fx-text-fill: $LIGHT_CONTROLS_FOREGROUND
 
 .menu-item:focused
-  -fx-background-color: $CONTROLS_BACKGROUND_SELECTED
+  -fx-background-color: $LIGHT_CONTROLS_BACKGROUND_SELECTED
 
   .label
     -fx-text-fill: white
@@ -51,16 +51,20 @@
       -fx-background-color: transparent
 
 .button, .toggle-button
-  -fx-background-color: $BACKGROUND_LIGHT
+  -fx-background-color: $BUTTON_BACKGROUND
+  -fx-text-fill: $BUTTON_FOREGROUND
 
 .button:hover, .toggle-button:hover
-  -fx-background-color: $CONTROLS_BACKGROUND_HOVER
+  -fx-background-color: $BUTTON_BACKGROUND_HOVER
 
-.button:pressed
-  -fx-background-color: $CONTROLS_BACKGROUND_SELECTED
+.button-default
+  -fx-background-color: $ACCENT_COLOR
+
+.button-default:hover
+  -fx-background-color: $ACCENT_HOVER_COLOR
 
 .toggle-button:selected
-  -fx-background-color: $CONTROLS_BACKGROUND_SELECTED
+  -fx-background-color: $LIGHT_CONTROLS_BACKGROUND_SELECTED
 
 // Alternative styles
 .button-style2

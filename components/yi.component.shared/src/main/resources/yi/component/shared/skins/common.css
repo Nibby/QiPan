@@ -37,3 +37,7 @@
 .border-insets-0 {
     -fx-border-insets: 0;
 }
+
+.padding-10 {
+    -fx-padding: 10;
+}

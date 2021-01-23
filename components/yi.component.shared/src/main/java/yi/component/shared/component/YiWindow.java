@@ -2,7 +2,9 @@ package yi.component.shared.component;
 
 import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
-import yi.component.shared.component.YiScene;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import yi.component.shared.component.modal.YiModalContent;
 
 /**
  * An extended {@link Stage} with additional UI features.
@@ -18,9 +20,25 @@ public class YiWindow {
         this.stage.setScene(scene.getScene());
     }
 
-    public void setMainMenuBar(MenuBar menuBar) {
-        scene.setMainMenuBar(menuBar);
+    /**
+     * Delegates the call to {@link YiScene#setMainMenuBar(MenuBar)}.
+     *
+     * @param menuBar Main menu bar, nullable.
+     * @see YiScene#setMainMenuBar(MenuBar)
+     */
+    public void setMainMenuBar(@Nullable MenuBar menuBar) {
+        getScene().setMainMenuBar(menuBar);
     }
+
+    /**
+     * Delegates the call to {@link YiScene#pushModalContent(YiModalContent)}.
+     *
+     * @param modalContent Modal content to show.
+     */
+    public void pushModalContent(@NotNull YiModalContent modalContent) {
+        getScene().pushModalContent(modalContent);
+    }
+
 
     public void setWidth(double width) {
         this.stage.setWidth(width);
