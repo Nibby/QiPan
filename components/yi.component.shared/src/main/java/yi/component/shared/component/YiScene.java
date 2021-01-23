@@ -74,7 +74,6 @@ public final class YiScene {
             glassPane.clearContent(glassPane.currentModalContent, false, null);
         }
         glassPane.setContent(modalContent, isAnimated);
-        setModalMode(true);
     }
 
     public void removeModalContent(@NotNull YiModalContent contentToRemove) {
@@ -91,13 +90,16 @@ public final class YiScene {
                     glassPane.setContent(nextContent, false);
                 } else {
                     setGlassPaneVisible(false);
-                    setModalMode(false);
                 }
             });
         }
     }
 
     private void setModalMode(boolean isModal) {
+        if (isModal && modalContentStack.size() == 0) {
+            return;
+        }
+
         if (content != null) {
             GuiUtilities.traverseRecursive(content, node -> node.setDisable(isModal));
         }
@@ -112,9 +114,13 @@ public final class YiScene {
         if (isVisible) {
             if (!parentStackContents.contains(glassPane)) {
                 parentStackContents.add(glassPane);
+                setModalMode(true);
             }
         } else {
-            glassPane.setBackgroundDimmed(false, () -> parentStackContents.remove(glassPane));
+            glassPane.setBackgroundDimmed(false, () -> {
+                parentStackContents.remove(glassPane);
+                setModalMode(false);
+            });
         }
     }
 
