@@ -95,4 +95,8 @@ public final class ModalActionButton {
             button.getStyleClass().remove(YiStyleClass.DEFAULT_BUTTON.getName());
         }
     }
+
+    public void performAction() {
+        button.fire();
+    }
 }

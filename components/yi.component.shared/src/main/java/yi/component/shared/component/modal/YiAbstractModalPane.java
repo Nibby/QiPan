@@ -23,6 +23,7 @@ public abstract class YiAbstractModalPane implements YiModalContent {
     private final BorderPane contentRoot = new BorderPane();
     private Parent cachedContent = null;
     private ModalActionButton[] controlButtons = new ModalActionButton[0];
+    private ModalActionButton defaultButton = null;
     private CloseCallback closeCallback = null;
 
     public YiAbstractModalPane() {
@@ -128,6 +129,13 @@ public abstract class YiAbstractModalPane implements YiModalContent {
         this.closeCallback = callback;
     }
 
+    @Override
+    public void executeDefaultAction() {
+        if (defaultButton != null) {
+            defaultButton.performAction();
+        }
+    }
+
     /**
      * Optionally gives a {@link ModalActionButton} greater visual weighting than
      * other control buttons. Usually this is done to indicate the button is the
@@ -137,8 +145,14 @@ public abstract class YiAbstractModalPane implements YiModalContent {
      *               default button.
      */
     public void setDefaultControlButton(@Nullable ModalActionButton button) {
+        this.defaultButton = null;
+
         for (var btn : controlButtons) {
-            btn.setDefaultDecorated(btn.equals(button));
+            var defaultDecorated = btn.equals(button);
+            btn.setDefaultDecorated(defaultDecorated);
+            if (defaultDecorated) {
+                this.defaultButton = btn;
+            }
         }
     }
 

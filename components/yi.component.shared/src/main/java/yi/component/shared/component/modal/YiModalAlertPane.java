@@ -12,6 +12,7 @@ public class YiModalAlertPane extends YiAbstractModalPane {
 
     private final Label title = new Label();
     private final TextArea bodyMessage = new TextArea();
+    private boolean strictModal = false;
 
     private double prefWidth = -1;
     private double prefHeight = -1;
@@ -68,12 +69,16 @@ public class YiModalAlertPane extends YiAbstractModalPane {
 
     @Override
     public boolean isStrictModal() {
-        return true;
+        return strictModal;
     }
 
     @Override
     public boolean isContentDimmed() {
         return true;
+    }
+
+    public void setStrictModal(boolean strictModal) {
+        this.strictModal = strictModal;
     }
 
     public String getTitle() {

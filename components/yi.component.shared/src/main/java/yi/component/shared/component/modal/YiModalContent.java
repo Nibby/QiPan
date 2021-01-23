@@ -51,4 +51,11 @@ public interface YiModalContent {
      */
     void close(@Nullable ModalActionButton selectedActionButton);
 
+    /**
+     * Requests any default (recommended) action in the modal content be executed. If the execution
+     * is successful, the implementation must close the modal content. For dialog actions, this
+     * method should be equivalent to clicking the 'OK' button.
+     */
+    void executeDefaultAction();
+
 }

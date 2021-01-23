@@ -11,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -51,6 +53,21 @@ public final class YiScene {
         sceneRoot.setCenter(parentStack);
         scene = new Scene(sceneRoot);
         SkinManager.getUsedSkin().apply(scene);
+
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ESCAPE), () -> {
+            if (!modalContentStack.isEmpty()) {
+                var currentModalItem = modalContentStack.peek();
+                if (!currentModalItem.isStrictModal()) {
+                    currentModalItem.close(null);
+                }
+            }
+        });
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+            if (!modalContentStack.isEmpty()) {
+                var currentModalItem = modalContentStack.peek();
+                currentModalItem.executeDefaultAction();
+            }
+        });
     }
 
     /**
