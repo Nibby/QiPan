@@ -14,8 +14,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -41,6 +39,7 @@ public final class YiScene {
     private final BorderPane content;
     private final GlassPane glassPane;
     private boolean contentSet = false;
+    private MenuBar mainMenuBar = null;
     
     private final Stack<YiModalContent> modalContentStack = new Stack<>();
 
@@ -101,6 +100,9 @@ public final class YiScene {
     private void setModalMode(boolean isModal) {
         if (content != null) {
             GuiUtilities.traverseRecursive(content, node -> node.setDisable(isModal));
+        }
+        if (mainMenuBar != null) {
+            GuiUtilities.traverseMenuRecursive(mainMenuBar, menu -> menu.setDisable(isModal));
         }
     }
 
@@ -177,6 +179,7 @@ public final class YiScene {
         if (menuBar != null) {
             sceneRoot.setTop(menuBar);
         }
+        this.mainMenuBar = menuBar;
     }
 
     /*

@@ -3,6 +3,9 @@ package yi.component.shared.utilities;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -163,6 +166,20 @@ public final class GuiUtilities {
                 for (var child : ((Parent) item).getChildrenUnmodifiable()) {
                     items.push(child);
                 }
+            }
+        }
+    }
+
+    public static void traverseMenuRecursive(MenuBar menuBar, Consumer<MenuItem> menuItemConsumer) {
+        var itemsToVisit = new Stack<MenuItem>();
+        itemsToVisit.addAll(menuBar.getMenus());
+
+        while (!itemsToVisit.isEmpty()) {
+            var menuItem = itemsToVisit.pop();
+            menuItemConsumer.accept(menuItem);
+
+            if (menuItem instanceof Menu) {
+                itemsToVisit.addAll(((Menu) menuItem).getItems());
             }
         }
     }
