@@ -24,6 +24,7 @@ import yi.editor.framework.EditorHelper;
 import yi.editor.framework.EditorTextResources;
 import yi.editor.framework.action.EditorAction;
 import yi.editor.framework.action.EditorActionManager;
+import yi.editor.hack.Hacks;
 import yi.editor.settings.EditorSettings;
 
 import java.io.IOException;
@@ -58,6 +59,8 @@ public class EditorWindow extends YiWindow {
     }
 
     public EditorWindow(GameModel gameModel, EditorPerspective perspective) {
+        super();
+
         actionManager = new EditorActionManager(this);
         undoSystem = new EditorUndoSupport();
         addComponent(undoSystem);
@@ -112,6 +115,7 @@ public class EditorWindow extends YiWindow {
         });
 
         initializeActions(actionManager);
+        Hacks.fixSingleKeyAcceleratorsForMac(actionManager.getAllActions(), getScene());
 
         // Current action system implementation requires all actions to be created prior
         // to creating the menu bar. After this point newly created actions will not be

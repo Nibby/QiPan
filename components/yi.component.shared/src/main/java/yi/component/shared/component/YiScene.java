@@ -42,6 +42,7 @@ public final class YiScene {
     private final GlassPane glassPane;
     private boolean contentSet = false;
     private MenuBar mainMenuBar = null;
+    private boolean modalMode = false;
     
     private final Stack<YiModalContent> modalContentStack = new Stack<>();
 
@@ -113,16 +114,13 @@ public final class YiScene {
     }
 
     private void setModalMode(boolean isModal) {
-        if (isModal && modalContentStack.size() == 0) {
-            return;
-        }
-
         if (content != null) {
             GuiUtilities.traverseRecursive(content, node -> node.setDisable(isModal));
         }
         if (mainMenuBar != null) {
             GuiUtilities.traverseMenuRecursive(mainMenuBar, menu -> menu.setDisable(isModal));
         }
+        this.modalMode = isModal;
     }
 
     private void setGlassPaneVisible(boolean isVisible) {
@@ -203,6 +201,10 @@ public final class YiScene {
             sceneRoot.setTop(menuBar);
         }
         this.mainMenuBar = menuBar;
+    }
+
+    public boolean isModalMode() {
+        return modalMode;
     }
 
     /*
