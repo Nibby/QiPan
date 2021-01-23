@@ -23,10 +23,10 @@ public abstract class YiAbstractModalPane implements YiModalContent {
 
     private final BorderPane contentRoot = new BorderPane();
     private Parent cachedContent = null;
-    private ModalControlButton[] controlButtons = new ModalControlButton[0];
+    private ModalActionButton[] controlButtons = new ModalActionButton[0];
 
     public YiAbstractModalPane() {
-        ModalControlButton okayButton = ModalControlButton.createOkayButton();
+        ModalActionButton okayButton = ModalActionButton.createOkayButton();
         setControlButtons(okayButton);
         setDefaultControlButton(okayButton);
 
@@ -50,15 +50,15 @@ public abstract class YiAbstractModalPane implements YiModalContent {
 
     protected abstract @NotNull Pane createContent();
 
-    public void setControlButtons(ModalControlButton... buttons) {
-        for (ModalControlButton button : buttons) {
+    public void setControlButtons(ModalActionButton... buttons) {
+        for (ModalActionButton button : buttons) {
             button.setParent(this);
             layoutCloseTriggerButtons(buttons);
         }
         this.controlButtons = buttons;
     }
 
-    protected final void layoutCloseTriggerButtons(ModalControlButton[] buttons) {
+    protected final void layoutCloseTriggerButtons(ModalActionButton[] buttons) {
         Parent newContainer = createCloseTriggerButtonsPane(buttons);
         Objects.requireNonNull(newContainer, "Close trigger buttons pane must not be null");
 
@@ -70,17 +70,17 @@ public abstract class YiAbstractModalPane implements YiModalContent {
     }
 
     /**
-     * Constructs the UI component to display all {@link ModalControlButton}
+     * Constructs the UI component to display all {@link ModalActionButton}
      * associated with this modal pane.
      *
-     * @see #setControlButtons(ModalControlButton...)
+     * @see #setControlButtons(ModalActionButton...)
      */
-    protected @NotNull Parent createCloseTriggerButtonsPane(ModalControlButton[] buttons) {
-        List<ModalControlButton> primaryButtons = new ArrayList<>();
+    protected @NotNull Parent createCloseTriggerButtonsPane(ModalActionButton[] buttons) {
+        List<ModalActionButton> primaryButtons = new ArrayList<>();
 
         for (var button : buttons) {
             button.getCloseTrigger().ifPresent(trigger -> {
-                if (trigger == CloseTrigger.getPrimaryTrigger()) {
+                if (trigger == ActionType.getPrimaryTrigger()) {
                     primaryButtons.add(button);
                 }
             });
@@ -131,14 +131,14 @@ public abstract class YiAbstractModalPane implements YiModalContent {
     }
 
     /**
-     * Optionally gives a {@link ModalControlButton} greater visual weighting than
+     * Optionally gives a {@link ModalActionButton} greater visual weighting than
      * other control buttons. Usually this is done to indicate the button is the
      * primary action, or the recommended action.
      *
      * @param button Optional default control button, may be null to reset existing
      *               default button.
      */
-    public void setDefaultControlButton(@Nullable ModalControlButton button) {
+    public void setDefaultControlButton(@Nullable ModalActionButton button) {
         for (var btn : controlButtons) {
             btn.setDefaultDecorated(btn.equals(button));
         }
@@ -151,22 +151,22 @@ public abstract class YiAbstractModalPane implements YiModalContent {
     }
 
     @Override
-    public void close(@NotNull CloseTrigger method) {
-        Objects.requireNonNull(method);
+    public void close(@Nullable ModalActionButton button) {
         assert scene != null : "Scene should have been set when modal pane is being shown";
 
-        closeCallbackList.forEach(callback -> callback.onPaneClosing(method));
+        closeCallbackList.forEach(callback -> callback.onPaneClosing(button));
         scene.removeModalContent(this);
     }
 
-    public static abstract class CloseCallback {
+    @FunctionalInterface
+    public interface CloseCallback {
 
         /**
          * Invoked when the pane is closing, just before it is removed from the scene.
          *
-         * @param trigger What prompted the pane to close.
+         * @param button Button that was clicked which prompted the pane to close.
          */
-        abstract void onPaneClosing(CloseTrigger trigger);
+        void onPaneClosing(@Nullable ModalActionButton button);
 
     }
 }

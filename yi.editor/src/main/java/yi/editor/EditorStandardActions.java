@@ -1,24 +1,18 @@
 package yi.editor;
 
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
-import yi.component.shared.component.modal.YiAbstractModalPane;
 import yi.component.shared.component.modal.YiModalAlertPane;
-import yi.component.shared.component.modal.YiModalContent;
 import yi.core.go.GameModel;
 import yi.core.go.GameNode;
 import yi.core.go.editor.GameModelEditor;
 import yi.core.go.editor.edit.MoveEdit;
 import yi.core.go.editor.edit.RemoveNodeEdit;
-import yi.editor.components.EditorMainMenuType;
-import yi.editor.framework.EditorTextResources;
 import yi.editor.components.EditorComponent;
+import yi.editor.components.EditorMainMenuType;
 import yi.editor.framework.EditorAccelerator;
+import yi.editor.framework.EditorTextResources;
 import yi.editor.framework.action.*;
 
 import java.util.HashSet;
@@ -52,9 +46,9 @@ final class EditorStandardActions implements EditorComponent<Object> {
     private void createTestModalAction() {
         var actionItem = new EditorBasicAction(EditorTextResources.MENU_DEBUG,
                 context -> {
-                    var modal = new YiModalAlertPane(YiModalAlertPane.AlertType.INFO,
-                            "Title", "Some boyd msg");
-
+                    var modal = new YiModalAlertPane("Title", "Some boyd msg");
+                    modal.addCloseCallback(button -> {
+                    });
                     context.getEditorWindow().pushModalContent(modal);
                 });
         actionItem.setInMenuBar(EditorMainMenuType.HELP, 0d);

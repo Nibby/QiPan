@@ -2,7 +2,6 @@ package yi.component.shared.component;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
-import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -20,7 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import yi.component.shared.component.modal.CloseTrigger;
+import yi.component.shared.component.modal.ActionType;
 import yi.component.shared.component.modal.YiModalContent;
 
 import java.util.Objects;
@@ -199,7 +198,7 @@ public final class YiScene {
 
         private void onMousePressInBackground(MouseEvent evt) {
             if (currentModalContent != null && !currentModalContent.isStrictModal()) {
-                currentModalContent.close(CloseTrigger.CANCEL);
+                currentModalContent.close(null);
             }
         }
 

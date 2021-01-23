@@ -1,24 +1,24 @@
 package yi.component.shared.component.modal;
 
-public enum CloseTrigger {
+public enum ActionType {
 
     /**
      * The interaction was successful and subsequent actions (if any) should be
      * carried out.
      */
-    OKAY,
+    PRIMARY,
 
     /**
      * The interaction was dismissed because the user no longer wish to continue
      * some operation.
      */
-    CANCEL,
+    SECONDARY,
     ;
 
     /**
-     * @return The {@link CloseTrigger} value corresponding to the primary action button.
+     * @return The {@link ActionType} value corresponding to the primary action button.
      */
-    public static CloseTrigger getPrimaryTrigger() {
-        return OKAY;
+    public static ActionType getPrimaryTrigger() {
+        return PRIMARY;
     }
 }

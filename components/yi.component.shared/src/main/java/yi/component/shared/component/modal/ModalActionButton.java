@@ -17,21 +17,25 @@ import java.util.function.Consumer;
  * some action in the context of the modal dialog. Examples include 'OK', 'Cancel' or
  * 'Apply' buttons.
  */
-public final class ModalControlButton {
+public final class ModalActionButton {
 
     private final YiButton button;
-    private CloseTrigger trigger = null;
+    private final ActionType actionType;
     private YiModalContent parent = null;
     private Consumer<YiModalContent> action = null;
 
-    public ModalControlButton(@NotNull TextResource text) {
-        this(text, null);
+    public ModalActionButton(@NotNull ActionType actionType,
+                             @NotNull TextResource text) {
+        this(actionType, text, null);
     }
 
-    public ModalControlButton(@NotNull TextResource text,
-                              @Nullable Node icon) {
+    public ModalActionButton(@NotNull ActionType actionType,
+                             @NotNull TextResource text,
+                             @Nullable Node icon) {
         Objects.requireNonNull(text, "Text must not be null");
+        Objects.requireNonNull(actionType, "Action type must not be null");
 
+        this.actionType = actionType;
         this.button = new YiButton(text, icon);
         this.button.setMinWidth(80);
         this.button.setOnAction(actionEvent -> {
@@ -43,9 +47,7 @@ public final class ModalControlButton {
                 action.accept(parent);
             }
 
-            if (trigger != null) {
-                parent.close(trigger);
-            }
+            parent.close(this);
         });
     }
 
@@ -53,11 +55,10 @@ public final class ModalControlButton {
         Objects.requireNonNull(modalContent, "Parent must not be null");
 
         this.parent = modalContent;
-        this.button.setOnAction(actionEvent -> modalContent.close(trigger));
     }
 
-    protected final Optional<CloseTrigger> getCloseTrigger() {
-        return Optional.ofNullable(trigger);
+    protected final Optional<ActionType> getCloseTrigger() {
+        return Optional.ofNullable(actionType);
     }
 
     protected final YiButton getNode() {
@@ -68,31 +69,23 @@ public final class ModalControlButton {
         this.action = action;
     }
 
-    public void setCloseTrigger(CloseTrigger trigger) {
-        this.trigger = trigger;
-    }
-
     // Common button factory methods
-    public static ModalControlButton createOkayButton() {
-        return createOkayButton(YiPresetTextResource.BUTTON_OKAY, null);
+    public static ModalActionButton createOkayButton() {
+        return createPrimaryButton(YiPresetTextResource.BUTTON_OKAY, null);
     }
 
-    public static ModalControlButton createOkayButton(@NotNull TextResource text,
-                                                      @Nullable Node icon) {
-        var button = new ModalControlButton(text, icon);
-        button.setCloseTrigger(CloseTrigger.OKAY);
-        return button;
+    public static ModalActionButton createPrimaryButton(@NotNull TextResource text,
+                                                     @Nullable Node icon) {
+        return new ModalActionButton(ActionType.PRIMARY, text, icon);
     }
 
-    public static ModalControlButton createCancelButton() {
-        return createCancelButton(YiPresetTextResource.BUTTON_CANCEL, null);
+    public static ModalActionButton createCancelButton() {
+        return createSecondaryButton(YiPresetTextResource.BUTTON_CANCEL, null);
     }
 
-    public static ModalControlButton createCancelButton(@NotNull TextResource text,
-                                                        @Nullable Node icon) {
-        var button = new ModalControlButton(text, icon);
-        button.setCloseTrigger(CloseTrigger.CANCEL);
-        return button;
+    public static ModalActionButton createSecondaryButton(@NotNull TextResource text,
+                                                          @Nullable Node icon) {
+        return new ModalActionButton(ActionType.SECONDARY, text, icon);
     }
 
     public void setDefaultDecorated(boolean isDefaultButton) {

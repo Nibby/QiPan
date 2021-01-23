@@ -36,17 +36,17 @@ public class YiModalAlertPane extends YiAbstractModalPane {
 
     public YiModalAlertPane(@Nullable String title,
                             @Nullable String message) {
-        this(title, message, new ModalControlButton[0], null);
+        this(title, message, new ModalActionButton[0], null);
 
-        var okButton = ModalControlButton.createOkayButton();
-        setControlButtons(okButton, ModalControlButton.createCancelButton());
+        var okButton = ModalActionButton.createOkayButton();
+        setControlButtons(okButton, ModalActionButton.createCancelButton());
         setDefaultControlButton(okButton);
     }
 
     public YiModalAlertPane(@Nullable String title,
                             @Nullable String message,
-                            @NotNull ModalControlButton[] buttons,
-                            @Nullable ModalControlButton defaultButton) {
+                            @NotNull ModalActionButton[] buttons,
+                            @Nullable ModalActionButton defaultButton) {
         setTitle(title);
         setBodyMessage(message);
         setControlButtons(buttons);

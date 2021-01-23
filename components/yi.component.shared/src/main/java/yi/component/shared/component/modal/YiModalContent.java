@@ -2,6 +2,7 @@ package yi.component.shared.component.modal;
 
 import javafx.scene.Parent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import yi.component.shared.component.YiScene;
 
 /**
@@ -44,8 +45,10 @@ public interface YiModalContent {
     /**
      * Signal that this modal content should be dismissed.
      *
-     * @param method Dismissal type.
+     * @param selectedActionButton Button that was selected which triggered the close action.
+     *                             This may be null, which means the panel was dismissed
+     *                             without a button press.
      */
-    void close(@NotNull CloseTrigger method);
+    void close(@Nullable ModalActionButton selectedActionButton);
 
 }
