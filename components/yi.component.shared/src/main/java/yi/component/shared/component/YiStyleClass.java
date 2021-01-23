@@ -38,8 +38,7 @@ public enum YiStyleClass {
     DARK_SCROLL_PANE_CONTAINER("dark-scroll-pane-container"),
 
     MODAL_CONTENT_CONTAINER("modal-content-container"),
-    DEFAULT_BUTTON("button-default")
-    ;
+    DEFAULT_BUTTON("button-default");
 
     private final String cssClassName;
 

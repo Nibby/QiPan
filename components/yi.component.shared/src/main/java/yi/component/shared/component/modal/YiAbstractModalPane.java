@@ -1,17 +1,20 @@
 package yi.component.shared.component.modal;
 
-import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import yi.component.shared.component.YiScene;
 import yi.component.shared.component.YiStyleClass;
 import yi.component.shared.utilities.SystemUtilities;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public abstract class YiAbstractModalPane implements YiModalContent {
 
@@ -24,26 +27,30 @@ public abstract class YiAbstractModalPane implements YiModalContent {
 
     public YiAbstractModalPane() {
         ModalControlButton okayButton = ModalControlButton.createOkayButton();
-        setCloseTriggerButtons(okayButton);
+        setControlButtons(okayButton);
         setDefaultControlButton(okayButton);
+
+        contentRoot.getStyleClass().add(YiStyleClass.PADDING_10.getName());
     }
 
     @Override
     public @NotNull Parent getContent() {
         if (cachedContent == null) {
             cachedContent = createContent();
+            cachedContent.getStyleClass().add(YiStyleClass.PADDING_10.getName());
             Objects.requireNonNull(cachedContent);
             contentRoot.setCenter(cachedContent);
-            var bounds = cachedContent.getBoundsInLocal();
-            contentRoot.setMaxSize(bounds.getWidth(), bounds.getHeight());
-
+            double prefWidth = cachedContent.prefWidth(-1);
+            double height = cachedContent.prefHeight(-1);
+            contentRoot.setMinSize(prefWidth, height);
+            contentRoot.setMaxSize(prefWidth, height);
         }
         return contentRoot;
     }
 
     protected abstract @NotNull Pane createContent();
 
-    public void setCloseTriggerButtons(ModalControlButton... buttons) {
+    public void setControlButtons(ModalControlButton... buttons) {
         for (ModalControlButton button : buttons) {
             button.setParent(this);
             layoutCloseTriggerButtons(buttons);
@@ -66,7 +73,7 @@ public abstract class YiAbstractModalPane implements YiModalContent {
      * Constructs the UI component to display all {@link ModalControlButton}
      * associated with this modal pane.
      *
-     * @see #setCloseTriggerButtons(ModalControlButton...)
+     * @see #setControlButtons(ModalControlButton...)
      */
     protected @NotNull Parent createCloseTriggerButtonsPane(ModalControlButton[] buttons) {
         List<ModalControlButton> primaryButtons = new ArrayList<>();
@@ -80,8 +87,8 @@ public abstract class YiAbstractModalPane implements YiModalContent {
         }
 
         var container = new HBox();
+        container.setSpacing(10);
         container.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-        container.getStyleClass().add(YiStyleClass.PADDING_10.getName());
 
         Runnable addPrimaryButtons = () -> {
             for (var button : primaryButtons) {

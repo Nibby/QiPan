@@ -54,6 +54,10 @@
   -fx-background-color: transparent;
 }
 
+.label {
+  -fx-text-fill: #c8c8c8;
+}
+
 .button, .toggle-button {
   -fx-background-color: #5C5C5C;
   -fx-text-fill: #c8c8c8;
