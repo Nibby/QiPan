@@ -3,6 +3,7 @@ package yi.editor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import org.jetbrains.annotations.NotNull;
+import yi.component.shared.component.modal.ModalActionButton;
 import yi.component.shared.component.modal.YiModalAlertPane;
 import yi.core.go.GameModel;
 import yi.core.go.GameNode;
@@ -65,15 +66,21 @@ final class EditorStandardActions implements EditorComponent<Object> {
                 if (node.isLastMoveInThisVariation()) {
                     editor.recordAndApplyUndoable(new RemoveNodeEdit(node));
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setContentText("Deleting this node will also delete all of its " +
-                            "subsequent variations.\n\nWould you like to continue?");
-                    alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
-                    alert.showAndWait().ifPresent(button -> {
-                        if (button == ButtonType.YES) {
+                    var modal = new YiModalAlertPane("Confirm Deletion",
+                            "Deleting this move will remove all subsequent variations.\n\nWould you like to continue?");
+                    var buttons = new ModalActionButton[] {
+                            ModalActionButton.createOkayButton(),
+                            ModalActionButton.createCancelButton()
+                    };
+                    modal.setControlButtons(buttons);
+                    modal.setDefaultControlButton(buttons[1]); // The cancel button
+                    modal.addCloseCallback(button -> {
+                        if (button == buttons[0]) {
                             editor.recordAndApplyUndoable(new RemoveNodeEdit(node));
                         }
                     });
+                    modal.setPrefSize(420, 180);
+                    window.pushModalContent(modal);
                 }
             }
         });

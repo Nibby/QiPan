@@ -14,13 +14,15 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import yi.component.shared.component.modal.ActionType;
 import yi.component.shared.component.modal.YiModalContent;
+import yi.component.shared.utilities.GuiUtilities;
 
 import java.util.Objects;
 import java.util.Stack;
@@ -73,6 +75,7 @@ public final class YiScene {
             glassPane.clearContent(glassPane.currentModalContent, false, null);
         }
         glassPane.setContent(modalContent, isAnimated);
+        setModalMode(true);
     }
 
     public void removeModalContent(@NotNull YiModalContent contentToRemove) {
@@ -89,8 +92,15 @@ public final class YiScene {
                     glassPane.setContent(nextContent, false);
                 } else {
                     setGlassPaneVisible(false);
+                    setModalMode(false);
                 }
             });
+        }
+    }
+
+    private void setModalMode(boolean isModal) {
+        if (content != null) {
+            GuiUtilities.traverseRecursive(content, node -> node.setDisable(isModal));
         }
     }
 
@@ -322,6 +332,7 @@ public final class YiScene {
 
             var compositeAnimation = new ParallelTransition(fade, slideUp);
             compositeAnimation.setCycleCount(1);
+            compositeAnimation.setOnFinished(event -> modalContentRootComponent.requestFocus());
             compositeAnimation.play();
         }
 

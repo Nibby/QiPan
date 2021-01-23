@@ -1,8 +1,8 @@
 package yi.component.shared.utilities;
 
 import javafx.geometry.Bounds;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -15,10 +15,10 @@ import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
 import yi.component.shared.component.KeyModifier;
 
-import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.Set;
+import java.util.Stack;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public final class GuiUtilities {
@@ -149,5 +149,21 @@ public final class GuiUtilities {
         spacer.setPrefWidth(width);
 
         return spacer;
+    }
+
+    public static void traverseRecursive(Parent nodeToTraverse, Consumer<Node> nodeConsumer) {
+        var items = new Stack<Node>();
+        items.push(nodeToTraverse);
+
+        while (!items.isEmpty()) {
+            var item = items.pop();
+            nodeConsumer.accept(item);
+
+            if (item instanceof Parent) {
+                for (var child : ((Parent) item).getChildrenUnmodifiable()) {
+                    items.push(child);
+                }
+            }
+        }
     }
 }
