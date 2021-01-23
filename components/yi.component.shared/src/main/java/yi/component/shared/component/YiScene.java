@@ -195,8 +195,8 @@ public final class YiScene {
      */
     private static final class GlassPane extends BorderPane {
 
-        private static final int BACKGROUND_DIM_ANIMATION_DURATION = 350;
-        private static final int CONTENT_ANIMATION_DURATION = 350;
+        private static final int BACKGROUND_DIM_ANIMATION_DURATION = 250;
+        private static final int CONTENT_ANIMATION_DURATION = 250;
 
         private final StackPane contentStack = new StackPane();
         private final BorderPane dimPane = new BorderPane();

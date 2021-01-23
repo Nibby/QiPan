@@ -18,12 +18,12 @@ import java.util.Objects;
 
 public abstract class YiAbstractModalPane implements YiModalContent {
 
-    private final List<CloseCallback> closeCallbackList = new ArrayList<>();
     private YiScene scene;
 
     private final BorderPane contentRoot = new BorderPane();
     private Parent cachedContent = null;
     private ModalActionButton[] controlButtons = new ModalActionButton[0];
+    private CloseCallback closeCallback = null;
 
     public YiAbstractModalPane() {
         ModalActionButton okayButton = ModalActionButton.createOkayButton();
@@ -96,24 +96,26 @@ public abstract class YiAbstractModalPane implements YiModalContent {
             }
         };
 
-        Runnable addSecondaryButtons = () -> {
-            for (var button : buttons) {
-                if (primaryButtons.contains(button)) {
-                    continue;
-                }
-                container.getChildren().add(button.getNode());
-            }
-        };
-
         /*
             macOS desktop design guidelines recommends adding primary action furthermost
             to the right, while Windows prefers adding secondary actions to the right.
          */
         if (SystemUtilities.isMac()) {
             addPrimaryButtons.run();
-            addSecondaryButtons.run();
+            for (int i = buttons.length - 1; i > 0; --i) {
+                var button = buttons[i];
+                if (primaryButtons.contains(button)) {
+                    continue;
+                }
+                container.getChildren().add(button.getNode());
+            }
         } else {
-            addSecondaryButtons.run();
+            for (var button : buttons) {
+                if (primaryButtons.contains(button)) {
+                    continue;
+                }
+                container.getChildren().add(button.getNode());
+            }
             addPrimaryButtons.run();
         }
 
@@ -121,13 +123,9 @@ public abstract class YiAbstractModalPane implements YiModalContent {
     }
 
 
-    public void addCloseCallback(@NotNull CloseCallback callback) {
+    public void setCloseCallback(@NotNull CloseCallback callback) {
         Objects.requireNonNull(callback);
-        closeCallbackList.add(callback);
-    }
-
-    public void removeCloseCallback(CloseCallback callback) {
-        closeCallbackList.remove(callback);
+        this.closeCallback = callback;
     }
 
     /**
@@ -154,8 +152,13 @@ public abstract class YiAbstractModalPane implements YiModalContent {
     public void close(@Nullable ModalActionButton button) {
         assert scene != null : "Scene should have been set when modal pane is being shown";
 
-        closeCallbackList.forEach(callback -> callback.onPaneClosing(button));
-        scene.removeModalContent(this);
+        boolean canRemove = true;
+        if (closeCallback != null) {
+            canRemove = closeCallback.onPaneClosing(button);
+        }
+        if (canRemove) {
+            scene.removeModalContent(this);
+        }
     }
 
     @FunctionalInterface
@@ -163,10 +166,13 @@ public abstract class YiAbstractModalPane implements YiModalContent {
 
         /**
          * Invoked when the pane is closing, just before it is removed from the scene.
+         * This method can cancel the close request through the return result.
          *
          * @param button Button that was clicked which prompted the pane to close.
+         * @return {@code true} if the pane can close successfully, otherwise the close request
+         * will be interrupted.
          */
-        void onPaneClosing(@Nullable ModalActionButton button);
+        boolean onPaneClosing(@Nullable ModalActionButton button);
 
     }
 }

@@ -1,8 +1,8 @@
 package yi.editor;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
+import yi.component.shared.component.modal.ModalActionButton;
+import yi.component.shared.component.modal.YiModalAlertPane;
 import yi.core.go.*;
 import yi.core.go.docformat.FileFormat;
 import yi.editor.components.EditorPerspective;
@@ -13,7 +13,6 @@ import yi.editor.utilities.GameModelUtilities;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 final class EditorStandardActionsHandler implements EditorStandardActions.ActionHandler {
 
@@ -27,29 +26,41 @@ final class EditorStandardActionsHandler implements EditorStandardActions.Action
         // TODO: Show a new dialog prompting for new game document information.
         //       The values below are hard-coded, and are temporary.
         var existingModel = window.getGameModel();
-        var doIt = new AtomicBoolean(false);
-
-        if (existingModel.isModified()) {
-            var overwriteAlert = new Alert(Alert.AlertType.CONFIRMATION,
-                    "Would you like to save your changes to the current document?",
-                    ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
-            overwriteAlert.showAndWait().ifPresent(selectedButton -> {
-                if (selectedButton == ButtonType.CANCEL) {
-                    doIt.set(false);
-                } else if (selectedButton == ButtonType.YES) {
-                    promptAndStoreSaveFile(existingModel, window);
-                    doIt.set(true);
-                } else {
-                    doIt.set(true);
-                }
-            });
-        } else {
-            doIt.set(true);
-        }
-
-        if (doIt.get()) {
+        Runnable createGameTask = () -> {
             var newModel = new GameModel(19, 19, StandardGameRules.CHINESE);
             window.setGameModel(newModel);
+        };
+
+        if (existingModel.isModified()) {
+            var saveButton = ModalActionButton.createPrimaryButton(EditorTextResources.SAVE, null);
+            var dontSaveButton = ModalActionButton.createSecondaryButton(EditorTextResources.DONT_SAVE, null);
+            var cancelButton = ModalActionButton.createSecondaryButton(EditorTextResources.CANCEL, null);
+
+            var overwriteAlert = new YiModalAlertPane("Create new document",
+                    "Would you like to save your changes to the current document?");
+            overwriteAlert.setControlButtons(saveButton, cancelButton, dontSaveButton);
+            overwriteAlert.setDefaultControlButton(saveButton);
+            overwriteAlert.setCloseCallback(button -> {
+                boolean createNewGame = false;
+
+                if (saveButton.equals(button)) {
+                    Path savePath = promptAndStoreSaveFile(existingModel, window);
+                    if (savePath == null) {
+                        return false; // user interrupted from file selection
+                    }
+                    createNewGame = true;
+                } else if (dontSaveButton.equals(button)) {
+                    createNewGame = true;
+                }
+
+                if (createNewGame) {
+                    createGameTask.run();
+                }
+                return true;
+            });
+            window.pushModalContent(overwriteAlert);
+        } else {
+            createGameTask.run();
         }
     }
 

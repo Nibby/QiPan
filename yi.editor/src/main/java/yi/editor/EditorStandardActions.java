@@ -1,7 +1,5 @@
 package yi.editor;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import org.jetbrains.annotations.NotNull;
 import yi.component.shared.component.modal.ModalActionButton;
 import yi.component.shared.component.modal.YiModalAlertPane;
@@ -40,20 +38,6 @@ final class EditorStandardActions implements EditorComponent<Object> {
         createPassAction();
         createDivider(EditorMainMenuType.EDIT, 0.1001d);
         createRemoveNodeAction();
-
-        createTestModalAction();
-    }
-
-    private void createTestModalAction() {
-        var actionItem = new EditorBasicAction(EditorTextResources.MENU_DEBUG,
-                context -> {
-                    var modal = new YiModalAlertPane("Title", "Some boyd msg");
-                    modal.addCloseCallback(button -> {
-                    });
-                    context.getEditorWindow().pushModalContent(modal);
-                });
-        actionItem.setInMenuBar(EditorMainMenuType.HELP, 0d);
-        standardActions.add(actionItem);
     }
 
     private void createRemoveNodeAction() {
@@ -74,10 +58,11 @@ final class EditorStandardActions implements EditorComponent<Object> {
                     };
                     modal.setControlButtons(buttons);
                     modal.setDefaultControlButton(buttons[1]); // The cancel button
-                    modal.addCloseCallback(button -> {
+                    modal.setCloseCallback(button -> {
                         if (button == buttons[0]) {
                             editor.recordAndApplyUndoable(new RemoveNodeEdit(node));
                         }
+                        return true;
                     });
                     modal.setPrefSize(420, 180);
                     window.pushModalContent(modal);

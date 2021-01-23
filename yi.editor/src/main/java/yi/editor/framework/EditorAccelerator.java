@@ -1,16 +1,12 @@
 package yi.editor.framework;
 
-import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import yi.component.shared.component.Accelerator;
 import yi.component.shared.component.KeyModifier;
 import yi.component.shared.i18n.TextResource;
 import yi.component.shared.utilities.SystemUtilities;
-import yi.editor.EditorWindow;
-import yi.editor.framework.EditorTextResources;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * List of all the shortcut-keys that can be triggered in the application. Each shortcut
@@ -61,7 +57,7 @@ public enum EditorAccelerator {
     PASS("pass", EditorTextResources.PASS, KeyCode.P, new KeyModifier[] { KeyModifier.SHORTCUT }),
     REMOVE_NODE("removeNode", EditorTextResources.REMOVE_NODE, KeyCode.BACK_SPACE, new KeyModifier[0]),
 
-    TO_PREVIOUS_NODE("toPreviousNode", EditorTextResources.TO_PREVIOUS_NODE, KeyCode.UP, new KeyModifier[0]),
+    TO_PREVIOUS_NODE("toPreviousNode", EditorTextResources.SAVE, KeyCode.UP, new KeyModifier[0]),
     TO_PREVIOUS_10_NODES("toPrevious10Nodes", EditorTextResources.TO_PREVIOUS_10_NODES, KeyCode.UP, new KeyModifier[] { KeyModifier.SHORTCUT }),
     TO_ROOT_NODE("toRootNode", EditorTextResources.TO_ROOT_NODE, KeyCode.UP, new KeyModifier[] { KeyModifier.SHIFT, KeyModifier.SHORTCUT }),
     TO_NEXT_NODE("toNextNode", EditorTextResources.TO_NEXT_NODE, KeyCode.DOWN, new KeyModifier[0]),
