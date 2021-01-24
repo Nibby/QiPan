@@ -2,10 +2,7 @@ package yi.component.shared.component;
 
 import yi.component.shared.Resource;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -43,8 +40,8 @@ public final class SkinManager {
     /**
      * @return Selected skin to be applied.
      */
-    public static Skin getUsedSkin() {
-        return USED_SKIN.get();
+    public static Optional<Skin> getUsedSkin() {
+        return Optional.ofNullable(USED_SKIN.get());
     }
 
     /**

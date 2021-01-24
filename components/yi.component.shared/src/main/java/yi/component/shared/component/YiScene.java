@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import yi.component.shared.component.modal.YiModalContent;
 import yi.component.shared.utilities.GuiUtilities;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -53,13 +54,14 @@ public final class YiScene {
         parentStack.getChildren().addAll(content);
         sceneRoot.setCenter(parentStack);
         scene = new Scene(sceneRoot);
-        SkinManager.getUsedSkin().apply(scene);
+
+        SkinManager.getUsedSkin().ifPresent(skin -> skin.apply(scene));
 
         getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ESCAPE), () -> {
             if (!modalContentStack.isEmpty()) {
                 var currentModalItem = modalContentStack.peek();
                 if (!currentModalItem.isStrictModal()) {
-                    currentModalItem.close(null);
+                    removeModalContent(currentModalItem, null);
                 }
             }
         });
@@ -72,6 +74,13 @@ public final class YiScene {
     }
 
     /**
+     * @see #pushModalContent(YiModalContent, Runnable)
+     */
+    public void pushModalContent(@NotNull YiModalContent modalContent) {
+        pushModalContent(modalContent, null);
+    }
+
+    /**
      * Adds one model content component to be shown. This will block input to the
      * main content pane until the model content is dismissed.
      *
@@ -80,8 +89,10 @@ public final class YiScene {
      * is dismissed.
      *
      * @param modalContent Modal content to show.
+     * @param onAnimationFinish Task to perform once content-push animation has completed.
      */
-    public void pushModalContent(@NotNull YiModalContent modalContent) {
+    public void pushModalContent(@NotNull YiModalContent modalContent,
+                                 @Nullable Runnable onAnimationFinish) {
         Objects.requireNonNull(modalContent, "Modal content must not be null");
         final boolean isAnimated = true;
 
@@ -91,10 +102,15 @@ public final class YiScene {
         if (glassPane.hasContent()) {
             glassPane.clearContent(glassPane.currentModalContent, false, null);
         }
-        glassPane.setContent(modalContent, isAnimated);
+        glassPane.setContent(modalContent, isAnimated, onAnimationFinish);
     }
 
     public void removeModalContent(@NotNull YiModalContent contentToRemove) {
+        removeModalContent(contentToRemove, null);
+    }
+
+    public void removeModalContent(@NotNull YiModalContent contentToRemove,
+                                   @Nullable Runnable onAnimationFinish) {
         Objects.requireNonNull(contentToRemove, "Modal content must not be null");
         assert modalContentStack.size() > 0 : "Called removeModalContent() when no modal items exist";
 
@@ -105,9 +121,12 @@ public final class YiScene {
             glassPane.clearContent(contentToRemove, true, () -> {
                 if (modalContentStack.size() > 0) {
                     var nextContent = modalContentStack.peek();
-                    glassPane.setContent(nextContent, false);
+                    glassPane.setContent(nextContent, false, null);
                 } else {
                     setGlassPaneVisible(false);
+                }
+                if (onAnimationFinish != null) {
+                    onAnimationFinish.run();
                 }
             });
         }
@@ -207,12 +226,20 @@ public final class YiScene {
         return modalMode;
     }
 
+    protected final GlassPane getGlassPane() {
+        return glassPane;
+    }
+
+    protected final Stack<YiModalContent> getModalStack() {
+        return modalContentStack;
+    }
+
     /*
         Manages the modal content for the scene. The glass pane is usually not added to
         the parent stack because its existence interferes with input events on the main
         content.
      */
-    private static final class GlassPane extends BorderPane {
+    static final class GlassPane extends BorderPane {
 
         private static final int BACKGROUND_DIM_ANIMATION_DURATION = 250;
         private static final int CONTENT_ANIMATION_DURATION = 250;
@@ -229,6 +256,7 @@ public final class YiScene {
 
             dimPane.getStyleClass().add(YiStyleClass.BACKGROUND_BLACK_60_PERCENT.getName());
             getStyleClass().add(YiStyleClass.BACKGROUND_TRANSPARENT.getName());
+            addEventHandler(MouseEvent.MOUSE_PRESSED, this::onMousePressInBackground);
             dimPane.addEventHandler(MouseEvent.MOUSE_PRESSED, this::onMousePressInBackground);
 
             setBackgroundDimmed(false, null);
@@ -251,8 +279,10 @@ public final class YiScene {
          *                     on the modal content stack and is being shown again
          *                     (because a more recent modal content was shown earlier and
          *                     dismissed), use {@code false}.
+         * @param onAnimationFinish Task to perform once content animation has finished.
          */
-        public void setContent(YiModalContent modalContent, boolean isNewContent) {
+        public void setContent(YiModalContent modalContent, boolean isNewContent,
+                               @Nullable Runnable onAnimationFinish) {
             resetContentStack();
             if (isNewContent) {
                 setBackgroundDimmed(modalContent.isContentDimmed(), () -> {});
@@ -270,7 +300,7 @@ public final class YiScene {
             currentContentRoot = modalContentRoot;
 
             if (isNewContent) {
-                animateContentSet(modalContentRoot);
+                animateContentSet(modalContentRoot, onAnimationFinish);
             }
         }
 
@@ -343,7 +373,9 @@ public final class YiScene {
             compositeAnimation.play();
         }
 
-        private void animateContentSet(Parent modalContentRootComponent) {
+        private void animateContentSet(@NotNull Parent modalContentRootComponent,
+                                       @Nullable Runnable onFinish) {
+
             var fade = new FadeTransition(Duration.millis(CONTENT_ANIMATION_DURATION),
                     modalContentRootComponent);
             fade.setFromValue(0.0d);
@@ -360,7 +392,12 @@ public final class YiScene {
 
             var compositeAnimation = new ParallelTransition(fade, slideUp);
             compositeAnimation.setCycleCount(1);
-            compositeAnimation.setOnFinished(event -> modalContentRootComponent.requestFocus());
+            compositeAnimation.setOnFinished(event -> {
+                modalContentRootComponent.requestFocus();
+                if (onFinish != null) {
+                    onFinish.run();
+                }
+            });
             compositeAnimation.play();
         }
 
@@ -400,11 +437,17 @@ public final class YiScene {
                     animation.setOnFinished(evt -> onAnimationFinish.run());
                 }
                 animation.play();
+            } else if (onAnimationFinish != null) {
+                onAnimationFinish.run();
             }
         }
 
         public boolean hasContent() {
             return currentModalContent != null;
+        }
+
+        protected final boolean isDimmed() {
+            return dimPane.isVisible();
         }
     }
 }

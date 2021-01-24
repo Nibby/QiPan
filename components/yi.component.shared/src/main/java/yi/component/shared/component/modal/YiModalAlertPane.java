@@ -28,8 +28,8 @@ public class YiModalAlertPane extends YiAbstractModalPane {
             YiStyleClass.BACKGROUND_DARK_SECONDARY.getName(),
             YiStyleClass.BACKGROUND_RADIUS_0.getName(),
             YiStyleClass.BORDER_INSETS_0.getName(),
-            YiStyleClass.FOREGROUND_DARK.getName(),
-            YiStyleClass.PADDING_10.getName()
+            YiStyleClass.PADDING_10.getName(),
+            YiStyleClass.FOREGROUND_DARK.getName()
         );
         bodyMessage.setEditable(false);
         bodyMessage.setWrapText(true);

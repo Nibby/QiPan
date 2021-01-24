@@ -2,7 +2,6 @@ package yi.editor.dialogs;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;

@@ -12,7 +12,10 @@ public interface YiModalContent {
 
     /**
      * Returns the top-level container for all the components to show in this modal
-     * content.
+     * content. This method may be invoked multiple times as newer modal content is
+     * pushed to the stack then removed, so implementation must ensure the returned
+     * container reference is the same for each call -- that is, it is not creating a
+     * new component each time.
      *
      * @return Modal content component container.
      */

@@ -1,9 +1,7 @@
-package yi.component.utilities;
+package yi.component.shared.utilities;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import yi.component.shared.utilities.ComparisonUtilities;
-import yi.component.shared.utilities.GuiUtilities;
 
 public final class GuiUtilitiesTest {
 

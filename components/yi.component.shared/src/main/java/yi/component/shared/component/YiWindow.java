@@ -39,6 +39,16 @@ public class YiWindow {
         getScene().pushModalContent(modalContent);
     }
 
+    /**
+     * Delegates the call to {@link YiScene#pushModalContent(YiModalContent, Runnable)}.
+     *
+     * @param modalContent Modal content to show.
+     * @param onAnimationFinish Code to run once push animation has finished.
+     */
+    public void pushModalContent(@NotNull YiModalContent modalContent,
+                                 @Nullable Runnable onAnimationFinish) {
+        getScene().pushModalContent(modalContent, onAnimationFinish);
+    }
 
     public void setWidth(double width) {
         this.stage.setWidth(width);
