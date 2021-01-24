@@ -21,6 +21,10 @@ import java.util.function.Consumer;
  */
 public class EditorBasicAction extends EditorAbstractAction<YiMenuItem, Node> {
 
+    public EditorBasicAction(@NotNull TextResource name) {
+        this(name, null);
+    }
+
     public EditorBasicAction(@NotNull TextResource name,
                              @Nullable Consumer<EditorActionContext> action) {
         super(name, action);

@@ -26,7 +26,7 @@
   -fx-background-color: #4A7BB0;
 }
 
-.context-menu {
+.context-menu, * > .context-menu {
   -fx-background-color: #CCCCCC;
   -fx-padding: 0px;
   -fx-box-border: transparent;
@@ -79,6 +79,90 @@
   -fx-background-color: #4A7BB0;
 }
 
+.text-input-control {
+  -fx-text-fill: #c8c8c8;
+  -fx-background-color: transparent;
+  -fx-highlight-text-fill: white;
+  -fx-highlight-fill: #5f8cbc;
+}
+
+.text-field {
+  -fx-background-color: #2B2B2B;
+  -fx-border-width: 1px;
+  -fx-border-color: #5C5C5C;
+  -fx-border-radius: 5px;
+  -fx-background-radius: 5px;
+  -fx-text-fill: #c8c8c8;
+  -fx-prompt-text-fill: #646464;
+}
+
+.text-field:focused {
+  -fx-border-color: #4A7BB0;
+}
+
+.spinner {
+  -fx-border-width: 1px;
+  -fx-border-color: #5C5C5C;
+  -fx-border-radius: 5px;
+  -fx-background-color: #2B2B2B;
+}
+.spinner .text-field {
+  -fx-border-width: 0px;
+}
+.spinner .increment-arrow-button, .spinner .decrement-arrow-button {
+  -fx-background-color: #5C5C5C;
+}
+.spinner .increment-arrow-button .increment-arrow, .spinner .increment-arrow-button .decrement-arrow, .spinner .decrement-arrow-button .increment-arrow, .spinner .decrement-arrow-button .decrement-arrow {
+  -fx-background-color: #b4b4b4;
+}
+.spinner .increment-arrow-button:hover, .spinner .decrement-arrow-button:hover {
+  -fx-background-color: #676767;
+}
+.spinner .increment-arrow-button:hover .increment-arrow, .spinner .increment-arrow-button:hover .decrement-arrow, .spinner .decrement-arrow-button:hover .increment-arrow, .spinner .decrement-arrow-button:hover .decrement-arrow {
+  -fx-background-color: #c8c8c8;
+}
+
+.combo-box {
+  -fx-background-color: #5C5C5C;
+}
+.combo-box .cell {
+  -fx-text-fill: #c8c8c8;
+}
+.combo-box .arrow-button {
+  -fx-background-color: transparent;
+}
+.combo-box .arrow-button .arrow {
+  -fx-background-color: #b4b4b4;
+}
+.combo-box .arrow-button:hover {
+  -fx-background-color: transparent;
+}
+.combo-box .arrow-button:hover .arrow {
+  -fx-background-color: #c8c8c8;
+}
+.combo-box .combo-box-popup {
+  -fx-border-color: #DDDDDD;
+}
+.combo-box .combo-box-popup .list-view {
+  -fx-background-color: #DDDDDD;
+  -fx-border-width: 1px;
+  -fx-border-insets: 0px;
+  -fx-background-insets: 0px;
+}
+.combo-box .combo-box-popup .list-view .list-cell {
+  -fx-background-color: transparent;
+  -fx-text-fill: #5C5C5C;
+}
+.combo-box .combo-box-popup .list-view .list-cell:hover {
+  -fx-background-color: #4A7BB0;
+  -fx-text-fill: white;
+}
+
+.combo-box:hover {
+  -fx-background-color: #676767;
+}
+
+/* TODO: These don't really belong here. Need to replace usage with lego-block alternatives */
 .button-style2 {
   -fx-background-color: transparent;
 }

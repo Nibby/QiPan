@@ -99,4 +99,8 @@ public final class ModalActionButton {
     public void performAction() {
         button.fire();
     }
+
+    public void setText(TextResource textResource) {
+        button.setText(textResource);
+    }
 }

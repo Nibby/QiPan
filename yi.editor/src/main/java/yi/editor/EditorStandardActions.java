@@ -56,7 +56,7 @@ final class EditorStandardActions implements EditorComponent<Object> {
                             ModalActionButton.createOkayButton(),
                             ModalActionButton.createCancelButton()
                     };
-                    modal.setControlButtons(buttons);
+                    modal.setActionButtons(buttons);
                     modal.setDefaultControlButton(buttons[1]); // The cancel button
                     modal.setCloseCallback(button -> {
                         if (button == buttons[0]) {

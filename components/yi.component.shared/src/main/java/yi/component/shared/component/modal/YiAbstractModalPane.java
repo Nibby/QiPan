@@ -28,7 +28,7 @@ public abstract class YiAbstractModalPane implements YiModalContent {
 
     public YiAbstractModalPane() {
         ModalActionButton okayButton = ModalActionButton.createOkayButton();
-        setControlButtons(okayButton);
+        setActionButtons(okayButton);
         setDefaultControlButton(okayButton);
 
         contentRoot.getStyleClass().add(YiStyleClass.PADDING_10.getName());
@@ -51,7 +51,7 @@ public abstract class YiAbstractModalPane implements YiModalContent {
 
     protected abstract @NotNull Pane createContent();
 
-    public void setControlButtons(ModalActionButton... buttons) {
+    public void setActionButtons(ModalActionButton... buttons) {
         for (ModalActionButton button : buttons) {
             button.setParent(this);
             layoutCloseTriggerButtons(buttons);
@@ -74,7 +74,7 @@ public abstract class YiAbstractModalPane implements YiModalContent {
      * Constructs the UI component to display all {@link ModalActionButton}
      * associated with this modal pane.
      *
-     * @see #setControlButtons(ModalActionButton...)
+     * @see #setActionButtons(ModalActionButton...)
      */
     protected @NotNull Parent createCloseTriggerButtonsPane(ModalActionButton[] buttons) {
         List<ModalActionButton> primaryButtons = new ArrayList<>();

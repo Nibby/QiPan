@@ -5,7 +5,6 @@ import yi.core.go.editor.GameModelEditor
 import yi.core.go.rules.GameRulesHandler
 import java.nio.file.Path
 import java.util.*
-import java.util.function.Consumer
 import kotlin.collections.ArrayList
 
 /**
@@ -55,7 +54,7 @@ class GameModel(val boardWidth: Int,
             : this(boardWidth, boardHeight, rulesHandler, ZobristHasher(boardWidth, boardHeight))
 
     constructor(boardWidth: Int, boardHeight: Int, rulesStandard: StandardGameRules)
-            : this(boardWidth, boardHeight, rulesStandard.getRulesHandler(), ZobristHasher(boardWidth, boardHeight))
+            : this(boardWidth, boardHeight, rulesStandard.rulesHandler, ZobristHasher(boardWidth, boardHeight))
 
 
     private fun internalCurrentNodeUpdate(currentNode: GameNode) {

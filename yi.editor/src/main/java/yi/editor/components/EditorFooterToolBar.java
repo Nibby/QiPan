@@ -6,13 +6,17 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import yi.component.shared.component.YiStyleClass;
+import yi.component.shared.component.modal.ModalActionButton;
+import yi.component.shared.component.modal.YiAbstractModalPane;
 import yi.component.shared.i18n.TextResource;
 import yi.component.shared.utilities.GuiUtilities;
 import yi.component.shared.utilities.IconUtilities;
 import yi.core.go.GameModel;
 import yi.core.go.GameModelInfo;
 import yi.editor.EditorWindow;
+import yi.editor.dialogs.EditorGameModelEditDialog;
 import yi.editor.framework.EditorAccelerator;
 import yi.editor.framework.EditorTextResources;
 import yi.editor.framework.action.EditorAction;
@@ -20,9 +24,7 @@ import yi.editor.framework.action.EditorActionManager;
 import yi.editor.framework.action.EditorBasicAction;
 import yi.editor.framework.action.EditorSeparatorAction;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static yi.editor.framework.EditorTextResources.MOVE_COUNT;
@@ -90,6 +92,18 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
     }
 
     private final Label moveLabel = new Label("");
+    private final EditorAction editModelInfoAction = new EditorBasicAction(EditorTextResources.EDIT_GAME_INFO);
+    {
+        IconUtilities.loadIcon("/yi/editor/icons/editMode_white32.png", EditorFooterToolBar.class)
+            .ifPresent(icon -> {
+                var recoloredIcon = IconUtilities.flatColorSwap(icon.getImage(), 180, 180, 180);
+                editModelInfoAction.setIcon(new ImageView(recoloredIcon));
+            });
+        editModelInfoAction.setInMenuBar(EditorMainMenuType.FILE, 0.8f);
+        editModelInfoAction.setShowIconOnMenuItem(false);
+        editModelInfoAction.setComponentCompact(true);
+        editModelInfoAction.getAsComponent().getStyleClass().add("button-style3");
+    }
 
     public EditorFooterToolBar() {
         // TODO: Consider putting these CSS class strings into a constant class ...
@@ -153,6 +167,16 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
         newModel.onCurrentNodeChange().addListener(newValue -> updateMoveInfo(newValue.getNode().getMoveNumber()));
 
         updateGameModelInfo(newModel);
+        editModelInfoAction.setAction(context -> {
+            var modelEditDialog = new EditorGameModelEditDialog(newModel);
+            modelEditDialog.setCloseCallback(button -> {
+                if (button == modelEditDialog.actionButton) {
+                    modelEditDialog.applyChangesToGameModel();
+                }
+                return true;
+            });
+            context.getEditorWindow().pushModalContent(modelEditDialog);
+        });
     }
 
     public void onGameInfoUpdate(final String key, Object newValue) {
@@ -181,6 +205,8 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
                 GuiUtilities.createStaticSpacer(8),
                 playerWhiteName,
                 playerWhiteRank,
+                GuiUtilities.createStaticSpacer(8),
+                editModelInfoAction.getAsComponent(),
                 GuiUtilities.createDynamicSpacer(),
                 toRootAction.getAsComponent(),
                 toPrevious10Action.getAsComponent(),
@@ -225,7 +251,9 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
 
     @Override
     public @NotNull EditorAction[] getActions(EditorActionManager actionManager) {
-        return navActions.toArray(new EditorAction[0]);
+        Set<EditorAction> allActions = new HashSet<>(navActions);
+        allActions.add(editModelInfoAction);
+        return allActions.toArray(new EditorAction[0]);
     }
 
     @Override

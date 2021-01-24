@@ -6,6 +6,7 @@ import yi.component.shared.component.modal.YiModalAlertPane;
 import yi.core.go.*;
 import yi.core.go.docformat.FileFormat;
 import yi.editor.components.EditorPerspective;
+import yi.editor.dialogs.EditorGameModelEditDialog;
 import yi.editor.framework.EditorTextResources;
 import yi.editor.framework.action.EditorActionContext;
 import yi.editor.utilities.GameModelUtilities;
@@ -27,8 +28,15 @@ final class EditorStandardActionsHandler implements EditorStandardActions.Action
         //       The values below are hard-coded, and are temporary.
         var existingModel = window.getGameModel();
         Runnable createGameTask = () -> {
-            var newModel = new GameModel(19, 19, StandardGameRules.CHINESE);
-            window.setGameModel(newModel);
+            var newGameDialog = new EditorGameModelEditDialog();
+            newGameDialog.setCloseCallback(button -> {
+                if (button == newGameDialog.actionButton) {
+                    GameModel newModel = newGameDialog.createNewGameModel();
+                    window.setGameModel(newModel);
+                }
+                return true;
+            });
+            window.pushModalContent(newGameDialog);
         };
 
         if (existingModel.isModified()) {
@@ -38,7 +46,7 @@ final class EditorStandardActionsHandler implements EditorStandardActions.Action
 
             var overwriteAlert = new YiModalAlertPane("Create new document",
                     "Would you like to save your changes to the current document?");
-            overwriteAlert.setControlButtons(saveButton, cancelButton, dontSaveButton);
+            overwriteAlert.setActionButtons(saveButton, cancelButton, dontSaveButton);
             overwriteAlert.setDefaultControlButton(saveButton);
             overwriteAlert.setCloseCallback(button -> {
                 boolean createNewGame = false;

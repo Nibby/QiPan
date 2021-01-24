@@ -40,7 +40,7 @@ public class YiModalAlertPane extends YiAbstractModalPane {
         this(title, message, new ModalActionButton[0], null);
 
         var okButton = ModalActionButton.createOkayButton();
-        setControlButtons(okButton, ModalActionButton.createCancelButton());
+        setActionButtons(okButton, ModalActionButton.createCancelButton());
         setDefaultControlButton(okButton);
     }
 
@@ -50,7 +50,7 @@ public class YiModalAlertPane extends YiAbstractModalPane {
                             @Nullable ModalActionButton defaultButton) {
         setTitle(title);
         setBodyMessage(message);
-        setControlButtons(buttons);
+        setActionButtons(buttons);
         setDefaultControlButton(defaultButton);
     }
 

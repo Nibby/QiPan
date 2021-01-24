@@ -9,19 +9,11 @@ import java.util.*
  * corresponding [GameRulesHandler] that contains all the relevant logic specific to that
  * ruleset.
  */
-enum class StandardGameRules {
+enum class StandardGameRules(val rulesHandler: GameRulesHandler) {
 
-    CHINESE {
-        override fun getRulesHandler() = ChineseRulesHandler()
-
+    CHINESE(ChineseRulesHandler()) {
         override fun isRuleset(rulesetName: String): Boolean = rulesetName.equals("chinese", ignoreCase = true)
     };
-
-    /**
-     * @return The rules handler that contains all the relevant logic specific to that
-     * ruleset.
-     */
-    abstract fun getRulesHandler(): GameRulesHandler
 
     /**
      * This method is often used to parse ruleset definition in text-form.

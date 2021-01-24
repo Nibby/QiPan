@@ -25,7 +25,7 @@
 .menu:showing > .menu:showing
   -fx-background-color: $LIGHT_CONTROLS_BACKGROUND_SELECTED
 
-.context-menu
+.context-menu, * > .context-menu
   -fx-background-color: $LIGHT_CONTROLS_BACKGROUND_HOVER
   -fx-padding: 0px
   -fx-box-border: transparent
@@ -69,7 +69,77 @@
 .toggle-button:selected
   -fx-background-color: $LIGHT_CONTROLS_BACKGROUND_SELECTED
 
-// Alternative styles
+.text-input-control
+  -fx-text-fill: $TEXT_FOREGROUND
+  -fx-background-color: transparent
+  -fx-highlight-text-fill: $TEXT_HIGHLIGHT_FOREGROUND
+  -fx-highlight-fill: $TEXT_HIGHLIGHT_BACKGROUND
+
+.text-field
+  -fx-background-color: $BACKGROUND_DARK
+  -fx-border-width: 1px
+  -fx-border-color: $LIGHT_CONTROLS_FOREGROUND
+  -fx-border-radius: $CONTROL_CORNER_RADIUS
+  -fx-background-radius: $CONTROL_CORNER_RADIUS
+  -fx-text-fill: $TEXT_FOREGROUND
+  -fx-prompt-text-fill: $TEXT_SECONDARY_FOREGROUND
+
+.text-field:focused
+  -fx-border-color: $ACCENT_COLOR
+
+.spinner
+  -fx-border-width: 1px
+  -fx-border-color: $LIGHT_CONTROLS_FOREGROUND
+  -fx-border-radius: $CONTROL_CORNER_RADIUS
+  -fx-background-color: $BACKGROUND_DARK
+
+  .text-field
+    -fx-border-width: 0px
+
+  .increment-arrow-button, .decrement-arrow-button
+    -fx-background-color: $BUTTON_BACKGROUND
+    .increment-arrow, .decrement-arrow
+      -fx-background-color: rgb(180, 180, 180)
+
+  .increment-arrow-button:hover, .decrement-arrow-button:hover
+    -fx-background-color: $BUTTON_BACKGROUND_HOVER
+    .increment-arrow, .decrement-arrow
+      -fx-background-color: rgb(200, 200, 200)
+
+.combo-box
+  -fx-background-color: $BUTTON_BACKGROUND
+
+  .cell
+    -fx-text-fill: $TEXT_FOREGROUND
+
+  .arrow-button
+    -fx-background-color: transparent
+    .arrow
+      -fx-background-color: rgb(180, 180, 180)
+  .arrow-button:hover
+    -fx-background-color: transparent
+    .arrow
+      -fx-background-color: rgb(200, 200, 200)
+
+  .combo-box-popup
+    -fx-border-color: $BACKGROUND_LIGHT
+
+    .list-view
+      -fx-background-color: $BACKGROUND_LIGHT
+      -fx-border-width: 1px
+      -fx-border-insets: 0px
+      -fx-background-insets: 0px
+      .list-cell
+        -fx-background-color: transparent
+        -fx-text-fill: $LIGHT_CONTROLS_FOREGROUND
+      .list-cell:hover
+        -fx-background-color: $ACCENT_COLOR
+        -fx-text-fill: $TEXT_HIGHLIGHT_FOREGROUND
+
+.combo-box:hover
+  -fx-background-color: $BUTTON_BACKGROUND_HOVER
+
+/* TODO: These don't really belong here. Need to replace usage with lego-block alternatives */
 .button-style2
   -fx-background-color: transparent
 

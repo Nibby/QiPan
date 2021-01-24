@@ -76,9 +76,13 @@ public final class EditorTextResources {
     public static final TextResource TO_NEXT_10_NODES = standardResource("toNext10Nodes");
     public static final TextResource TO_VARIATION_END = standardResource("toVariationEnd");
 
+    public static final TextResource CREATE = standardResource("create");
     public static final TextResource SAVE = standardResource("save");
     public static final TextResource DONT_SAVE = standardResource("dontSave");
     public static final TextResource CANCEL = standardResource("cancel");
+    public static final TextResource EDIT_GAME_INFO = standardResource("editGameInfo");
+
+    public static final TextResource CHINESE_RULESET = standardResource("ruleset.chinese");
 
     public static void installSupportedLanguages() {
         Language.add(new Language("\u7b80\u4f53\u4e2d\u6587", Locale.SIMPLIFIED_CHINESE));

@@ -319,7 +319,7 @@ class SgfFileFormatHandlerTest {
         Assertions.assertTrue(data.contains("FF[" + SgfFileFormatHandler.SgfExporter.SGF_EXPORTED_FILE_FORMAT_VERSION + "]"), "File format version mismatch. Exported: $data")
         Assertions.assertTrue(data.contains("SZ[19]"), "Board size not correct. Exported: $data")
         Assertions.assertTrue(data.contains("KM[5.5]"), "Komi value not correct. Exported: $data")
-        Assertions.assertTrue(data.contains("RU[" + StandardGameRules.CHINESE.getRulesHandler().getInternalName() + "]"), "Ruleset name mismatch. Exported: $data")
+        Assertions.assertTrue(data.contains("RU[" + StandardGameRules.CHINESE.rulesHandler.getInternalName() + "]"), "Ruleset name mismatch. Exported: $data")
 
         testExportedFormatCorrectness(data, model)
     }
