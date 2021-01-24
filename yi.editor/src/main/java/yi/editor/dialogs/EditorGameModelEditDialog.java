@@ -262,7 +262,7 @@ public class EditorGameModelEditDialog extends YiAbstractModalPane {
     }
 
     private Optional<String> getPlayerWhiteRank() {
-        var text = playerBlackRank.getText();
+        var text = playerWhiteRank.getText();
         return text.isBlank() ? Optional.empty() : Optional.of(text);
     }
 
@@ -271,7 +271,7 @@ public class EditorGameModelEditDialog extends YiAbstractModalPane {
     }
 
     private Optional<String> getPlayerBlackRank() {
-        var text = playerWhiteName.getText();
+        var text = playerBlackRank.getText();
         return text.isBlank() ? Optional.empty() : Optional.of(text);
     }
 

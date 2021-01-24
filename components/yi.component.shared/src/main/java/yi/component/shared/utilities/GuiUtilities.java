@@ -136,6 +136,7 @@ public final class GuiUtilities {
      */
     public static Pane createDynamicSpacer() {
         var dynamicSpacer = new Pane();
+        dynamicSpacer.setMinWidth(1);
         HBox.setHgrow(dynamicSpacer, Priority.SOMETIMES);
 
         return dynamicSpacer;
