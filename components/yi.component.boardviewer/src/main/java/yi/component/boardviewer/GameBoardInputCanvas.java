@@ -98,7 +98,7 @@ final class GameBoardInputCanvas extends GameBoardCanvas {
     private void onMouseEvent(MouseEvent e) {
         retrieveCursorPosition(e.getX(), e.getY());
 
-        if (manager.edit.isEditable()) {
+        if (manager.edit.isEditable() && isCursorInBounds()) {
             var editMode = manager.editModeProperty().get();
 
             if (e.getEventType() == MouseEvent.MOUSE_PRESSED) {
@@ -119,6 +119,11 @@ final class GameBoardInputCanvas extends GameBoardCanvas {
         }
 
         render(manager);
+    }
+
+    private boolean isCursorInBounds() {
+        return cursorX >= 0 && cursorX < manager.getGameModel().getBoardWidth()
+                && cursorY >= 0 && cursorY < manager.getGameModel().getBoardHeight();
     }
 
     private void onMouseExit() {
