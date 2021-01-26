@@ -67,6 +67,10 @@ final class GameBoardMainCanvas extends GameBoardCanvas {
             var board = size.getBoardBounds();
             g.setStroke(Color.MAGENTA);
             g.strokeRect(board.getX(), board.getY(), board.getWidth(), board.getHeight());
+
+            var coordinates = size.getCoordinateLabelBounds();
+            g.setStroke(Color.PURPLE);
+            g.strokeRect(coordinates.getX(), coordinates.getY(), coordinates.getWidth(), coordinates.getHeight());
         }
 
         private static void renderBackground(GraphicsContext g, GameBoardManager manager) {
@@ -146,7 +150,7 @@ final class GameBoardMainCanvas extends GameBoardCanvas {
             if (drawTop) {
                 var y = coordBounds.getY()
                         + fontSize
-                        + maxHeightForLabels / 5 * 2
+                        + maxHeightForLabels / 9 * 3
                         - textBounds.getHeight() / 2;
 
                 renderHorizontalAxisLabels(g, manager.size, boardWidth, y, font);

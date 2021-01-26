@@ -98,13 +98,10 @@ public final class GameBoardSize {
         // is what matters. We will scale everything to the correct size later.
         var scaledGridBounds = new LayoutRectangle(gridFitRatio.getWidth(), gridFitRatio.getHeight());
         var scaledStoneSize = (scaledGridBounds.getWidth() / boardWidth + scaledGridBounds.getHeight() / boardHeight) / 2;
-        var percentageStoneSizeToGridBounds = scaledStoneSize / Math.min(scaledGridBounds.getWidth(), scaledGridBounds.getHeight());
-        var stoneArea = scaledGridBounds.createParentWithMargin(getPixelValue(percentageStoneSizeToGridBounds, scaledGridBounds));
-        coordinateLabelBounds = computeCoordinateLabelBounds(stoneArea, coordinateLabelPosition);
+        var stoneArea = scaledGridBounds.createParentWithMargin(scaledStoneSize);
+        coordinateLabelBounds = computeCoordinateLabelBounds(stoneArea, scaledStoneSize, coordinateLabelPosition);
 
-        double percentageMarginBetweenBoardEdgeAndLabels = 0.01d;
-        var edgeLabelMargins = getPixelValue(percentageMarginBetweenBoardEdgeAndLabels, coordinateLabelBounds);
-        boardBounds = coordinateLabelBounds.createParentWithMargin(edgeLabelMargins);
+        boardBounds = coordinateLabelBounds.createParentWithMargin(getPixelValue(0.01d, coordinateLabelBounds));
         // Expressed as a percentage of total canvas width/height
         // Rescale everything. All the objects are referenced internally by
         // LayoutRectangle, so the entire hierarchy will be updated. These are percentages
@@ -165,28 +162,26 @@ public final class GameBoardSize {
         co-ordinate label orientation.
      */
     private LayoutRectangle computeCoordinateLabelBounds(LayoutRectangle gridBounds,
+                                                         double stoneSize,
                                                          CoordinateLabelPosition coordinateLabelPosition) {
         double marginLeft = 0, marginTop = 0, marginBottom = 0, marginRight = 0;
-        double minSide = Math.min(gridBounds.getWidth(), gridBounds.getHeight());
-        double percentageMarginForCoordinateLabels = 0.03d;
-        double hasMargin = percentageMarginForCoordinateLabels * minSide;
         LayoutRectangle.ContainerStrategy containerStrategy;
 
         if (coordinateLabelPosition == CoordinateLabelPosition.NONE) {
             return gridBounds;
         } else if (coordinateLabelPosition == CoordinateLabelPosition.TOP_AND_LEFT) {
             containerStrategy = LayoutRectangle.ContainerStrategy.CLAMP_BOTTOM_RIGHT;
-            marginBottom = hasMargin;
-            marginRight = hasMargin;
+            marginBottom = stoneSize;
+            marginRight = stoneSize;
         } else if (coordinateLabelPosition == CoordinateLabelPosition.BOTTOM_AND_RIGHT) {
             containerStrategy = LayoutRectangle.ContainerStrategy.CLAMP_TOP_LEFT;
-            marginTop = hasMargin;
-            marginLeft = hasMargin;
+            marginTop = stoneSize;
+            marginLeft = stoneSize;
         } else if (coordinateLabelPosition == CoordinateLabelPosition.ALL_SIDES) {
-            marginTop = hasMargin;
-            marginLeft = hasMargin;
-            marginBottom = hasMargin;
-            marginRight = hasMargin;
+            marginTop = stoneSize;
+            marginLeft = stoneSize;
+            marginBottom = stoneSize;
+            marginRight = stoneSize;
             containerStrategy = LayoutRectangle.ContainerStrategy.CENTER;
         } else {
             throw new IllegalStateException("Unimplemented coordinate label position: " + coordinateLabelPosition);
