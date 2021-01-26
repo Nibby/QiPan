@@ -114,9 +114,22 @@ final class GameBoardInputCanvas extends GameBoardCanvas {
 
         if (e.getEventType() == MouseEvent.MOUSE_MOVED) {
             maybeShowVariationPreview(e);
+        } else if (e.getEventType() == MouseEvent.MOUSE_EXITED) {
+            onMouseExit();
         }
 
         render(manager);
+    }
+
+    private void onMouseExit() {
+        resetState();
+    }
+
+    private void resetState() {
+        cursorX = -1;
+        cursorY = -1;
+        renderCursor = false;
+        manager.setPreviewNode(null);
     }
 
     private void maybeShowVariationPreview(MouseEvent e) {
@@ -148,10 +161,6 @@ final class GameBoardInputCanvas extends GameBoardCanvas {
         }
     }
 
-    private void clearCursorPosition() {
-        renderCursor = false;
-    }
-
     private void setCursorPosition(int[] gridPosition) {
         renderCursor = true;
         cursorX = gridPosition[0];
@@ -160,6 +169,6 @@ final class GameBoardInputCanvas extends GameBoardCanvas {
 
     private void retrieveCursorPosition(double mouseX, double mouseY) {
         Optional<int[]> cursorPosition = manager.size.getGridPosition(mouseX, mouseY);
-        cursorPosition.ifPresentOrElse(this::setCursorPosition, this::clearCursorPosition);
+        cursorPosition.ifPresentOrElse(this::setCursorPosition, this::resetState);
     }
 }
