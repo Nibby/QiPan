@@ -129,8 +129,8 @@ final class GameBoardMainCanvas extends GameBoardCanvas {
             var maxHeightForLabels = (coordBounds.getHeight() - gridBounds.getHeight()) / 2;
             var maxWidthForLabels = (coordBounds.getWidth() - gridBounds.getWidth()) / 2;
 
-            var heightFontSize = maxHeightForLabels / 5 * 2;
-            var widthFontSize = maxWidthForLabels / 5 * 2;
+            var heightFontSize = maxHeightForLabels / 3;
+            var widthFontSize = maxWidthForLabels / 3;
             var fontSize = Math.min(heightFontSize, widthFontSize);
             if (fontSize < 1d) {
                 fontSize = 1d;
