@@ -28,6 +28,9 @@ public class EditorGameModelEditDialog extends YiAbstractModalPane {
     private final GameModel gameModel;
     private final boolean isNewModel;
 
+    public final ModalActionButton actionButton = new ModalActionButton(ActionType.PRIMARY, EditorTextResources.EMPTY);
+    public final ModalActionButton cancelButton = new ModalActionButton(ActionType.SECONDARY, EditorTextResources.CANCEL);
+
     // Essential fields
     private final Spinner<Integer> boardWidth = new Spinner<>();
     private final Spinner<Integer> boardHeight = new Spinner<>();
@@ -57,13 +60,16 @@ public class EditorGameModelEditDialog extends YiAbstractModalPane {
 
         playerBlackName.setPrefWidth(146);
         playerBlackName.setPromptText("Black Name");
+
         playerBlackRank.setPrefWidth(50);
         playerBlackRank.setPromptText("Rank");
+        playerBlackRank.textProperty().addListener((event) -> limitTextLength(playerBlackRank, 2));
 
         playerWhiteName.setPrefWidth(146);
         playerWhiteName.setPromptText("White Name");
         playerWhiteRank.setPrefWidth(50);
         playerWhiteRank.setPromptText("Rank");
+        playerWhiteRank.textProperty().addListener((event) -> limitTextLength(playerWhiteRank, 2));
 
         gameRules.setPrefWidth(162);
         komi.setPrefWidth(70);
@@ -96,8 +102,14 @@ public class EditorGameModelEditDialog extends YiAbstractModalPane {
         }
     }
 
-    public final ModalActionButton actionButton = new ModalActionButton(ActionType.PRIMARY, EditorTextResources.EMPTY);
-    public final ModalActionButton cancelButton = new ModalActionButton(ActionType.SECONDARY, EditorTextResources.CANCEL);
+    private void limitTextLength(TextField textField, int maxLength) {
+        String text = textField.getText();
+        if (!text.isEmpty() && text.isBlank()) {
+            textField.setText("");
+        } else if (text.length() > maxLength) {
+            textField.setText(text.substring(0, maxLength));
+        }
+    }
 
     public EditorGameModelEditDialog() {
         this.isNewModel = true;
@@ -128,6 +140,9 @@ public class EditorGameModelEditDialog extends YiAbstractModalPane {
             //    in the new ruleset (i.e. NZ suicide rules -> Japanese)
             //
             //  - Board size values: can't resize board after game is created
+        } else {
+            playerBlackName.textProperty().addListener(event -> limitTextLength(playerBlackName, 32));
+            playerWhiteName.textProperty().addListener(event -> limitTextLength(playerWhiteName, 32));
         }
     }
 
