@@ -19,6 +19,9 @@
 }
 
 /* Component presets */
+.dark-scroll-pane-container .content {
+  -fx-text-fill: #CCCCCC;
+}
 .dark-scroll-pane-container .scroll-pane {
   -fx-background-color: #333333;
   -fx-background-radius: 0px;
