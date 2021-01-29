@@ -6,10 +6,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import yi.component.shared.component.YiStyleClass;
-import yi.component.shared.component.modal.ModalActionButton;
-import yi.component.shared.component.modal.YiAbstractModalPane;
 import yi.component.shared.i18n.TextResource;
 import yi.component.shared.utilities.GuiUtilities;
 import yi.component.shared.utilities.IconUtilities;
@@ -102,7 +99,10 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
         editModelInfoAction.setInMenuBar(EditorMainMenuType.FILE, 0.8f);
         editModelInfoAction.setShowIconOnMenuItem(false);
         editModelInfoAction.setComponentCompact(true);
-        editModelInfoAction.getAsComponent().getStyleClass().add("button-style3");
+        Node node = editModelInfoAction.getAsComponent();
+        if (node != null) {
+            node.getStyleClass().add("button-style3");
+        }
     }
 
     public EditorFooterToolBar() {
@@ -185,15 +185,22 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
                 playerBlackName.setText(newValue.toString());
                 break;
             case GameModelInfo.KEY_PLAYER_BLACK_RANK:
-                playerBlackRank.setText(newValue.toString());
+                setRankText(playerBlackRank, newValue.toString());
                 break;
             case GameModelInfo.KEY_PLAYER_WHITE_NAME:
                 playerWhiteName.setText(newValue.toString());
                 break;
             case GameModelInfo.KEY_PLAYER_WHITE_RANK:
-                playerWhiteRank.setText(newValue.toString());
+                setRankText(playerWhiteRank, newValue.toString());
                 break;
         }
+    }
+
+    private void setRankText(Label rankLabel, String text) {
+        rankLabel.setText(text);
+        boolean noText = text.isBlank();
+        rankLabel.setVisible(!noText);
+        rankLabel.setManaged(!noText);
     }
 
     public void setContentForPerspective(EditorPerspective perspective) {

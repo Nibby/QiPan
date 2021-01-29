@@ -271,23 +271,13 @@ public class EditorGameModelEditDialog extends YiAbstractModalPane {
         info.setKomi((float) komiValue);
         info.setHandicapCount(handicap.getValue());
         info.setPlayerBlackName(getPlayerBlackName());
-        getPlayerBlackRank().ifPresent(info::setPlayerBlackRank);
+        info.setPlayerBlackRank(playerBlackRank.getText());
         info.setPlayerWhiteName(getPlayerWhiteName());
-        getPlayerWhiteRank().ifPresent(info::setPlayerWhiteRank);
-    }
-
-    private Optional<String> getPlayerWhiteRank() {
-        var text = playerWhiteRank.getText();
-        return text.isBlank() ? Optional.empty() : Optional.of(text);
+        info.setPlayerWhiteRank(playerWhiteRank.getText());
     }
 
     private String getPlayerWhiteName() {
         return getNameOrDefault(playerWhiteName, EditorTextResources.DEFAULT_WHITE_NAME.getLocalisedText());
-    }
-
-    private Optional<String> getPlayerBlackRank() {
-        var text = playerBlackRank.getText();
-        return text.isBlank() ? Optional.empty() : Optional.of(text);
     }
 
     private String getPlayerBlackName() {
