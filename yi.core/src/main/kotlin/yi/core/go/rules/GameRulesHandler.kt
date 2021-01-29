@@ -22,8 +22,11 @@ abstract class GameRulesHandler {
     /**
      * Returns the default komi value to be used for the game if one isn't explicitly
      * specified in [GameModelInfo.getKomi].
+     *
+     * @param handicap Number of handicaps used in this game. The default case
+     * should assume no handicaps.
      */
-    abstract fun getDefaultKomi(): Float
+    abstract fun getDefaultKomi(handicap: Int = 0): Float
 
     /**
      * Returns true if the ruleset allows suicide moves to be played.

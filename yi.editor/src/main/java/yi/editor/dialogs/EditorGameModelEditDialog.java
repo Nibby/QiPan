@@ -21,12 +21,16 @@ import yi.editor.framework.EditorTextResources;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 public class EditorGameModelEditDialog extends YiAbstractModalPane {
 
     private final GameModel gameModel;
     private final boolean isNewModel;
+    private boolean isKomiModified = false;
+
+    private boolean autoAdjustingValue = false;
+    private boolean boardWidthAdjusted = false;
+    private boolean boardHeightAdjusted = false;
 
     public final ModalActionButton actionButton = new ModalActionButton(ActionType.PRIMARY, EditorTextResources.EMPTY);
     public final ModalActionButton cancelButton = new ModalActionButton(ActionType.SECONDARY, EditorTextResources.CANCEL);
@@ -54,9 +58,36 @@ public class EditorGameModelEditDialog extends YiAbstractModalPane {
 
     {
         boardWidth.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 25, 19));
+        boardWidth.valueProperty().addListener((event, oldValue, newValue) -> {
+            if (!autoAdjustingValue) {
+                boardWidthAdjusted = true;
+                if (!boardHeightAdjusted) {
+                    setAutoAdjustedBoardHeight(newValue);
+                }
+            }
+        });
         boardHeight.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 25, 19));
+        boardHeight.valueProperty().addListener((event, oldValue, newValue) -> {
+            if (!autoAdjustingValue) {
+                boardHeightAdjusted = true;
+                if (!boardWidthAdjusted) {
+                    setAutoAdjustedBoardWidth(newValue);
+                }
+            }
+        });
+
         handicap.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 9, 0));
+        handicap.valueProperty().addListener((event, oldHandiValue, newHandiValue) -> {
+            if (!isKomiModified) {
+                GameRulesValue selectedGameRules = gameRules.getSelectionModel().getSelectedItem();
+                if (selectedGameRules != null) {
+                    setAutoAdjustedKomiValue(selectedGameRules, newHandiValue);
+                }
+            }
+        });
+
         komi.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-999d, 999d, 0d, 0.5d));
+        komi.valueProperty().addListener(event -> isKomiModified = true);
 
         playerBlackName.setPrefWidth(146);
         playerBlackName.setPromptText("Black Name");
@@ -81,6 +112,14 @@ public class EditorGameModelEditDialog extends YiAbstractModalPane {
         boardHeight.setPrefWidth(70);
         boardHeight.setEditable(true);
 
+        gameRules.getSelectionModel().selectedItemProperty().addListener(
+            (event, oldRuleset, newRuleset) -> {
+                if (!isKomiModified) {
+                    int handicapCount = handicap.getValue();
+                    setAutoAdjustedKomiValue(newRuleset, handicapCount);
+                }
+            }
+        );
         gameRules.getItems().clear();
         boolean firstIteration = true;
 
@@ -100,6 +139,35 @@ public class EditorGameModelEditDialog extends YiAbstractModalPane {
                 firstIteration = false;
             }
         }
+    }
+
+    private void setAutoAdjustedBoardWidth(int width) {
+        autoAdjust(() -> {
+            boardWidth.getValueFactory().setValue(width);
+            boardWidthAdjusted = false;
+        });
+    }
+
+    private void setAutoAdjustedBoardHeight(int height) {
+        autoAdjust(() -> {
+            boardHeight.getValueFactory().setValue(height);
+            boardHeightAdjusted = false;
+        });
+    }
+
+    private void setAutoAdjustedKomiValue(GameRulesValue gameRules, int handicapCount) {
+        Objects.requireNonNull(gameRules);
+        autoAdjust(() -> {
+            float newKomi = gameRules.getRulesHandler().getDefaultKomi(handicapCount);
+            komi.getValueFactory().setValue((double) newKomi);
+            isKomiModified = false; // Reset this flag because this is not a user komi edit
+        });
+    }
+
+    private void autoAdjust(Runnable task) {
+        autoAdjustingValue = true;
+        task.run();
+        autoAdjustingValue = false;
     }
 
     private void limitTextLength(TextField textField, int maxLength) {
@@ -123,6 +191,8 @@ public class EditorGameModelEditDialog extends YiAbstractModalPane {
         setupActionButtons();
 
         if (gameModel != null) {
+            disableAutoValueAdjustment();
+
             // TODO: Need to check what happens when importing an external SGF that contain
             //       data that is outside our constraints.
             var info = gameModel.getInfo();
@@ -144,6 +214,12 @@ public class EditorGameModelEditDialog extends YiAbstractModalPane {
             playerBlackName.textProperty().addListener(event -> limitTextLength(playerBlackName, 32));
             playerWhiteName.textProperty().addListener(event -> limitTextLength(playerWhiteName, 32));
         }
+    }
+
+    private void disableAutoValueAdjustment() {
+        boardWidthAdjusted = true;
+        boardHeightAdjusted = true;
+        isKomiModified = true;
     }
 
     private void setupActionButtons() {

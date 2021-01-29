@@ -2,6 +2,7 @@ package yi.core.go
 
 import yi.core.go.rules.ChineseRulesHandler
 import yi.core.go.rules.GameRulesHandler
+import yi.core.go.rules.NewZealandRulesHandler
 import java.util.*
 
 /**
@@ -13,6 +14,13 @@ enum class StandardGameRules(val rulesHandler: GameRulesHandler) {
 
     CHINESE(ChineseRulesHandler()) {
         override fun isRuleset(rulesetName: String): Boolean = rulesetName.equals("chinese", ignoreCase = true)
+    },
+
+    NEW_ZEALAND(NewZealandRulesHandler()) {
+        override fun isRuleset(rulesetName: String): Boolean {
+            return rulesetName.equals("new zealand", ignoreCase = true)
+                    || rulesetName.equals("nz", ignoreCase = true)
+        }
     };
 
     /**

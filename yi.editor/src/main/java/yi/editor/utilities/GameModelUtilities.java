@@ -15,7 +15,7 @@ public final class GameModelUtilities {
     }
 
     public static GameModel createGameModel(int width, int height, StandardGameRules ruleset) {
-        return createGameModel(width, height, ruleset, ruleset.getRulesHandler().getDefaultKomi());
+        return createGameModel(width, height, ruleset, ruleset.getRulesHandler().getDefaultKomi(0));
     }
 
     private static GameModel createGameModel(int width, int height, StandardGameRules ruleset,
