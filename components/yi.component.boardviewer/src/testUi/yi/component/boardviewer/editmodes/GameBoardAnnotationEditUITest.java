@@ -5,7 +5,6 @@ import javafx.geometry.Pos;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -13,7 +12,9 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.robot.Motion;
 import yi.component.boardviewer.GameBoardUITestBase;
-import yi.core.go.*;
+import yi.core.go.Annotation;
+import yi.core.go.AnnotationType;
+import yi.core.go.StandardGameRules;
 
 import java.util.HashSet;
 
@@ -158,8 +159,7 @@ public final class GameBoardAnnotationEditUITest extends GameBoardUITestBase {
         testAddLabel_MixedEdits_WorksAsExpected(robot, AnnotationEditMode.LabelType.LETTER);
     }
 
-    @Test
-    public void testAddLabel_OneAtATime_TextIsDifferent(FxRobot robot, AnnotationEditMode.LabelType labelType) {
+    private void testAddLabel_OneAtATime_TextIsDifferent(FxRobot robot, AnnotationEditMode.LabelType labelType) {
         getBoard().setEditMode(EditMode.annotationLabel(AnnotationEditMode.LabelType.NUMBER));
 
         click(robot, 0, 0);
@@ -181,8 +181,7 @@ public final class GameBoardAnnotationEditUITest extends GameBoardUITestBase {
         }
     }
 
-    @Test
-    public void testAddLabel_DragAcross_TextIsIdentical(FxRobot robot, AnnotationEditMode.LabelType labelType) {
+    private void testAddLabel_DragAcross_TextIsIdentical(FxRobot robot, AnnotationEditMode.LabelType labelType) {
         if (getBoardWidth() < 2) {
             throw new IllegalStateException("Cannot run this test because getBoard() width is too small.");
         }
@@ -208,8 +207,7 @@ public final class GameBoardAnnotationEditUITest extends GameBoardUITestBase {
         }
     }
 
-    @Test
-    public void testAddLabel_MixedEdits_WorksAsExpected(FxRobot robot, AnnotationEditMode.LabelType labelType) {
+    private void testAddLabel_MixedEdits_WorksAsExpected(FxRobot robot, AnnotationEditMode.LabelType labelType) {
         if (getBoardWidth() < 2) {
             throw new IllegalStateException("Cannot run this test because getBoard() width is too small.");
         }
