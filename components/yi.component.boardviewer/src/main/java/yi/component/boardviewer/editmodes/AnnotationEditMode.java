@@ -58,6 +58,7 @@ public final class AnnotationEditMode extends AbstractEditMode {
 
     private @Nullable LabelType labelType;
     private String nextLabelText;
+    boolean isLabelEditOfDifferentType = false;
 
     /**
      * Instantiates an annotation edit mode that works with one specific type of
@@ -124,17 +125,22 @@ public final class AnnotationEditMode extends AbstractEditMode {
 
         var annotationHere = manager.getGameModel().getCurrentNode().getAnnotationAt(gridX, gridY);
         boolean createRatherThanDelete;
+        isLabelEditOfDifferentType = false;
 
         if (annotationHere != null) {
             var itsType = annotationHere.getType();
             createRatherThanDelete = itsType != typeToApply;
+            if (typeToApply == AnnotationType.LABEL) {
+                isLabelEditOfDifferentType = isDifferentLabelType(annotationHere);
+                createRatherThanDelete |= isLabelEditOfDifferentType;
+            }
         } else {
             createRatherThanDelete = true;
         }
 
         if (createRatherThanDelete) {
             dragAction = DragAction.CREATE;
-            maybeCreateAnnotation(manager, gridX, gridY);
+            maybeCreateAnnotation(manager, gridX, gridY, isLabelEditOfDifferentType);
         } else {
             dragAction = DragAction.DELETE;
             removeAnnotationAt(manager, gridX, gridY, mouseSessionId);
@@ -147,7 +153,7 @@ public final class AnnotationEditMode extends AbstractEditMode {
 
         if (AnnotationType.Companion.isPointAnnotation(typeToApply)) {
             if (dragAction == DragAction.CREATE) {
-                maybeCreateAnnotation(manager, gridX, gridY);
+                maybeCreateAnnotation(manager, gridX, gridY, isLabelEditOfDifferentType);
             } else if (dragAction == DragAction.DELETE) {
                 removeAnnotationAt(manager, gridX, gridY, mouseSessionId);
             } else {
@@ -173,10 +179,12 @@ public final class AnnotationEditMode extends AbstractEditMode {
     private int directionalAnnoFirstY;
     private boolean directionalAnnoStartPositionDefined = false;
     
-    private void maybeCreateAnnotation(GameBoardManager manager, int gridX, int gridY) {
+    private void maybeCreateAnnotation(GameBoardManager manager, int gridX, int gridY,
+                                       boolean isLabelEditOfDifferentType) {
         Annotation annotationHere = manager.getGameModel().getCurrentNode().getAnnotationAt(gridX, gridY);
 
-        if (annotationHere != null && annotationHere.getType() == typeToApply) {
+        if (annotationHere != null && annotationHere.getType() == typeToApply
+            && typeToApply != AnnotationType.LABEL && isLabelEditOfDifferentType) {
             return; // Same annotation. Letting the logic fall through introduces too much overhead.
         }
 
@@ -247,6 +255,27 @@ public final class AnnotationEditMode extends AbstractEditMode {
         directionalAnnoStartPositionDefined = false;
         directionalAnnoFirstX = -1;
         directionalAnnoFirstY = -1;
+    }
+
+    private boolean isDifferentLabelType(Annotation annotationHere) {
+        if (annotationHere.getType() == AnnotationType.LABEL) {
+            var labelAnnotation = (Annotation.Label) annotationHere;
+            String labelText = labelAnnotation.getText();
+            boolean wantToCreateNumericalLabel = isNumericalLabel(nextLabelText);
+            boolean annotationIsNumerical = isNumericalLabel(labelText);
+
+            return wantToCreateNumericalLabel != annotationIsNumerical;
+        }
+        throw new IllegalStateException("Should not be checking label types if annotation is not a label");
+    }
+
+    private boolean isNumericalLabel(String labelText) {
+        try {
+            Integer.parseInt(labelText);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private String getNextLabelText(GameBoardManager manager) {
