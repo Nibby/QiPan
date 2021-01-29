@@ -194,7 +194,7 @@ public class GameTreeStructurePerformanceTest {
     private static final class TestingRules extends GameRulesHandler {
 
         @Override
-        public float getDefaultKomi() {
+        public float getDefaultKomi(int handicaps) {
             return 0;
         }
 

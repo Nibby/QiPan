@@ -23,7 +23,7 @@ public class GameTreeStructureCorrectnessTest {
     private static final class TestingRules extends GameRulesHandler {
 
         @Override
-        public float getDefaultKomi() {
+        public float getDefaultKomi(int handicap) {
             return 0;
         }
 
