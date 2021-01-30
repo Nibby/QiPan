@@ -64,6 +64,8 @@ public enum EditorAccelerator {
     TO_NEXT_10_NODES("toNext10Nodes", EditorTextResources.TO_NEXT_10_NODES, KeyCode.DOWN, new KeyModifier[] { KeyModifier.SHORTCUT }),
     TO_VARIATION_END("toVariationEnd", EditorTextResources.TO_VARIATION_END, KeyCode.DOWN, new KeyModifier[] { KeyModifier.SHIFT, KeyModifier.SHORTCUT }),
 
+    EDIT_GAME_INFO("editGameInfo", EditorTextResources.EDIT_GAME_INFO, KeyCode.I, new KeyModifier[] { KeyModifier.SHORTCUT }),
+
     TEST_ACCEL_1("testAccel1", EditorTextResources.EMPTY, KeyCode.DIGIT1, new KeyModifier[] { KeyModifier.CTRL, KeyModifier.ALT, KeyModifier.SHIFT }),
     TEST_ACCEL_2("testAccel2", EditorTextResources.EMPTY, KeyCode.DIGIT2, new KeyModifier[] { KeyModifier.CTRL, KeyModifier.ALT, KeyModifier.SHIFT }),
 

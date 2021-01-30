@@ -1,14 +1,17 @@
 package yi.editor.components;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 import yi.component.shared.component.YiStyleClass;
 import yi.component.shared.i18n.TextResource;
-import yi.component.shared.utilities.GuiUtilities;
 import yi.component.shared.utilities.IconUtilities;
 import yi.core.go.GameModel;
 import yi.core.go.GameModelInfo;
@@ -26,7 +29,7 @@ import java.util.function.Consumer;
 
 import static yi.editor.framework.EditorTextResources.MOVE_COUNT;
 
-public class EditorFooterToolBar extends ToolBar implements EditorComponent<ToolBar> {
+public class EditorFooterToolBar extends BorderPane implements EditorComponent<BorderPane> {
 
     private final Label playerBlackName = new Label("", IconUtilities.loadIcon("/yi/editor/icons/blackStone_white32.png", getClass(), 16).orElse(null));
     private final Label playerBlackRank = new Label("");
@@ -96,6 +99,7 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
                 var recoloredIcon = IconUtilities.flatColorSwap(icon.getImage(), 180, 180, 180);
                 editModelInfoAction.setIcon(new ImageView(recoloredIcon));
             });
+        editModelInfoAction.setAccelerator(EditorAccelerator.EDIT_GAME_INFO);
         editModelInfoAction.setInMenuBar(EditorMainMenuType.FILE, 0.8f);
         editModelInfoAction.setShowIconOnMenuItem(false);
         editModelInfoAction.setComponentCompact(true);
@@ -114,6 +118,34 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
 
         moveLabel.getStyleClass().add(YiStyleClass.FOREGROUND_DARK.getName());
         getStyleClass().add(YiStyleClass.BACKGROUND_DARK.getName());
+
+        setPrefHeight(35);
+
+        var mainToolBar = new HBox();
+        mainToolBar.setAlignment(Pos.CENTER_LEFT);
+        mainToolBar.getChildren().setAll(
+                createHBoxSpacer(16),
+                playerBlackName,
+                playerBlackRank,
+                createHBoxSpacer(16),
+                playerWhiteName,
+                playerWhiteRank
+        );
+        setCenter(mainToolBar);
+
+        var rightToolBar = new HBox();
+        rightToolBar.setAlignment(Pos.CENTER_RIGHT);
+        rightToolBar.getChildren().setAll(
+                toRootAction.getAsComponent(),
+                toPrevious10Action.getAsComponent(),
+                toPrevious1Action.getAsComponent(),
+                moveLabel,
+                toNext1Action.getAsComponent(),
+                toNext10Action.getAsComponent(),
+                toVariationEndAction.getAsComponent(),
+                createHBoxSpacer(8)
+        );
+        setRight(rightToolBar);
     }
 
     private void decorateAsRankLabel(Label label) {
@@ -203,27 +235,10 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
         rankLabel.setManaged(!noText);
     }
 
-    public void setContentForPerspective(EditorPerspective perspective) {
-        getItems().clear();
-        getItems().addAll(
-                GuiUtilities.createStaticSpacer(8),
-                playerBlackName,
-                playerBlackRank,
-                GuiUtilities.createStaticSpacer(8),
-                playerWhiteName,
-                playerWhiteRank,
-                GuiUtilities.createStaticSpacer(8),
-                editModelInfoAction.getAsComponent(),
-                GuiUtilities.createDynamicSpacer(),
-                toRootAction.getAsComponent(),
-                toPrevious10Action.getAsComponent(),
-                toPrevious1Action.getAsComponent(),
-                moveLabel,
-                toNext1Action.getAsComponent(),
-                toNext10Action.getAsComponent(),
-                toVariationEndAction.getAsComponent(),
-                GuiUtilities.createStaticSpacer(8)
-        );
+    private Node createHBoxSpacer(int width) {
+        var spacer = new Pane();
+        HBox.setMargin(spacer, new Insets(0, width/2f, 0, width/2f));
+        return spacer;
     }
 
     private EditorAction createNavAction(TextResource text,
@@ -264,7 +279,7 @@ public class EditorFooterToolBar extends ToolBar implements EditorComponent<Tool
     }
 
     @Override
-    public Optional<ToolBar> getComponent() {
+    public Optional<BorderPane> getComponent() {
         return Optional.of(this);
     }
 }
