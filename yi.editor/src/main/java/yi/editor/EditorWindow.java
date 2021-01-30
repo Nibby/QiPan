@@ -205,7 +205,6 @@ public class EditorWindow extends YiWindow {
             return; // Avoid flickering when setting the same layout
         }
         boardArea.setContentForPerspective(newLayout);
-        footerToolBar.setContentForPerspective(newLayout);
 
         var content = newLayout.getContent(this);
         var controlPane = new BorderPane();
